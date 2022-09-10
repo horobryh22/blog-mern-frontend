@@ -2,13 +2,14 @@ import React from 'react';
 
 import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
+import { NavLink } from 'react-router-dom';
 
 import styles from './Header.module.scss';
 
 import { ReturnComponentType } from 'types';
 
 export const Header = (): ReturnComponentType => {
-    const isAuth = true;
+    const isAuth = false;
 
     const onClickLogout = (): void => {};
 
@@ -16,15 +17,15 @@ export const Header = (): ReturnComponentType => {
         <div className={styles.root}>
             <Container maxWidth="lg">
                 <div className={styles.inner}>
-                    <a className={styles.logo} href="/">
+                    <NavLink className={styles.logo} to="/">
                         <div>KHOROBRYKH BLOG</div>
-                    </a>
+                    </NavLink>
                     <div className={styles.buttons}>
                         {isAuth ? (
                             <>
-                                <a href="/posts/create">
+                                <NavLink to="/posts/create">
                                     <Button variant="contained">Create article</Button>
-                                </a>
+                                </NavLink>
                                 <Button
                                     onClick={onClickLogout}
                                     variant="contained"
@@ -35,12 +36,12 @@ export const Header = (): ReturnComponentType => {
                             </>
                         ) : (
                             <>
-                                <a href="/login">
+                                <NavLink to="/login">
                                     <Button variant="outlined">Log In</Button>
-                                </a>
-                                <a href="/register">
+                                </NavLink>
+                                <NavLink to="/register">
                                     <Button variant="contained">Create account</Button>
-                                </a>
+                                </NavLink>
                             </>
                         )}
                     </div>

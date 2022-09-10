@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 
-export type PostType = {
+export type PostPropsType = {
     _id: any;
     title: any;
     createdAt: any;

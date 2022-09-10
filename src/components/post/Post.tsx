@@ -6,9 +6,10 @@ import EditIcon from '@mui/icons-material/Edit';
 import EyeIcon from '@mui/icons-material/RemoveRedEyeOutlined';
 import IconButton from '@mui/material/IconButton';
 import clsx from 'clsx';
+import { NavLink } from 'react-router-dom';
 
 import styles from './Post.module.scss';
-import { PostType } from './types';
+import { PostPropsType } from './types';
 
 import { PostSkeleton, UserInfo } from 'components';
 import { ReturnComponentType } from 'types';
@@ -26,7 +27,7 @@ export const Post = ({
     isFullPost,
     isLoading,
     isEditable,
-}: PostType): ReturnComponentType => {
+}: PostPropsType): ReturnComponentType => {
     if (isLoading) {
         return <PostSkeleton />;
     }
@@ -37,11 +38,11 @@ export const Post = ({
         <div className={clsx(styles.root, { [styles.rootFull]: isFullPost })}>
             {isEditable && (
                 <div className={styles.editButtons}>
-                    <a href={`/posts/${_id}/edit`}>
+                    <NavLink to={`/posts/${_id}/edit`}>
                         <IconButton color="primary">
                             <EditIcon />
                         </IconButton>
-                    </a>
+                    </NavLink>
                     <IconButton onClick={onClickRemove} color="secondary">
                         <DeleteIcon />
                     </IconButton>
@@ -65,7 +66,7 @@ export const Post = ({
                     <ul className={styles.tags}>
                         {tags.map((name: any) => (
                             <li key={name}>
-                                <a href={`/tag/${name}`}>#{name}</a>
+                                <NavLink to={`/tag/${name}`}>#{name}</NavLink>
                             </li>
                         ))}
                     </ul>

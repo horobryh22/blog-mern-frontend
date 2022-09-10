@@ -15,10 +15,10 @@ const App = (): ReturnComponentType => {
             <Container maxWidth="lg">
                 <Routes>
                     <Route path="/" element={<Home />} />
-                    <Route path="/new_post" element={<AddPost />} />
+                    <Route path="/new-post" element={<AddPost />} />
                     <Route path="/login" element={<Login />} />
-                    <Route path="/registration" element={<Registration />} />
-                    <Route path="/post/:id" element={<FullPost />} />
+                    <Route path="/register" element={<Registration />} />
+                    <Route path="/posts/:id" element={<FullPost />} />
                 </Routes>
             </Container>
         </>

@@ -5,19 +5,24 @@ import { CssBaseline, ThemeProvider } from '@mui/material';
 import ReactDOM from 'react-dom/client';
 
 import 'index.scss';
+import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 
 import App from './App';
 
+import { store } from 'store';
 import { theme } from 'themes/theme';
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 
 root.render(
-    <BrowserRouter>
-        <CssBaseline />
-        <ThemeProvider theme={theme}>
-            <App />
-        </ThemeProvider>
-    </BrowserRouter>,
+    <Provider store={store}>
+        <BrowserRouter>
+            <CssBaseline />
+            <ThemeProvider theme={theme}>
+                <App />
+            </ThemeProvider>
+        </BrowserRouter>
+        ,
+    </Provider>,
 );
