@@ -125,7 +125,8 @@
             {
                 "allowExpressions": true
             }
-        ]
+        ],
+        "react/no-array-index-key": 0
     },
     "settings": {
         "import/resolver": {
