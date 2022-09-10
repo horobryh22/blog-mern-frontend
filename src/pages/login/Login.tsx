@@ -13,18 +13,18 @@ export const Login = (): ReturnComponentType => {
     return (
         <Paper classes={{ root: styles.root }}>
             <Typography classes={{ root: styles.title }} variant="h5">
-                Вход в аккаунт
+                Sign In
             </Typography>
             <TextField
                 className={styles.field}
-                label="E-Mail"
+                label="Email"
                 error
-                helperText="Неверно указана почта"
+                helperText="Enter the correct email"
                 fullWidth
             />
-            <TextField className={styles.field} label="Пароль" fullWidth />
+            <TextField className={styles.field} label="Password" fullWidth />
             <Button size="large" variant="contained" fullWidth>
-                Войти
+                Log In
             </Button>
         </Paper>
     );

@@ -40,12 +40,12 @@ export const AddPost = (): ReturnComponentType => {
     return (
         <Paper style={{ padding: 30 }}>
             <Button variant="outlined" size="large">
-                Загрузить превью
+                Upload preview
             </Button>
             <input type="file" onChange={handleChangeFile} hidden />
             {imageUrl && (
                 <Button variant="contained" color="error" onClick={onClickRemoveImage}>
-                    Удалить
+                    Delete
                 </Button>
             )}
             {imageUrl && (
@@ -60,13 +60,13 @@ export const AddPost = (): ReturnComponentType => {
             <TextField
                 classes={{ root: styles.title }}
                 variant="standard"
-                placeholder="Заголовок статьи..."
+                placeholder="Header of article"
                 fullWidth
             />
             <TextField
                 classes={{ root: styles.tags }}
                 variant="standard"
-                placeholder="Тэги"
+                placeholder="Tags"
                 fullWidth
             />
             <SimpleMDE
@@ -77,10 +77,10 @@ export const AddPost = (): ReturnComponentType => {
             />
             <div className={styles.buttons}>
                 <Button size="large" variant="contained">
-                    Опубликовать
+                    Publish
                 </Button>
                 <a href="/">
-                    <Button size="large">Отмена</Button>
+                    <Button size="large">Cancel</Button>
                 </a>
             </div>
         </Paper>

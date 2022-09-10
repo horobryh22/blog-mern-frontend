@@ -18,7 +18,7 @@ export const TagsBlock = ({
     isLoading = true,
 }: TagsBlockType): ReturnComponentType => {
     return (
-        <SideBlock title="Тэги">
+        <SideBlock title="Tags">
             <List>
                 {/* eslint-disable-next-line no-magic-numbers */}
                 {(isLoading ? [...Array(5)] : items).map((name: any, i: any) => (

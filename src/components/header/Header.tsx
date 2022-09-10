@@ -8,7 +8,7 @@ import styles from './Header.module.scss';
 import { ReturnComponentType } from 'types';
 
 export const Header = (): ReturnComponentType => {
-    const isAuth = false;
+    const isAuth = true;
 
     const onClickLogout = (): void => {};
 
@@ -17,29 +17,29 @@ export const Header = (): ReturnComponentType => {
             <Container maxWidth="lg">
                 <div className={styles.inner}>
                     <a className={styles.logo} href="/">
-                        <div>ARCHAKOV BLOG</div>
+                        <div>KHOROBRYKH BLOG</div>
                     </a>
                     <div className={styles.buttons}>
                         {isAuth ? (
                             <>
                                 <a href="/posts/create">
-                                    <Button variant="contained">Написать статью</Button>
+                                    <Button variant="contained">Create article</Button>
                                 </a>
                                 <Button
                                     onClick={onClickLogout}
                                     variant="contained"
                                     color="error"
                                 >
-                                    Выйти
+                                    Log out
                                 </Button>
                             </>
                         ) : (
                             <>
                                 <a href="/login">
-                                    <Button variant="outlined">Войти</Button>
+                                    <Button variant="outlined">Log In</Button>
                                 </a>
                                 <a href="/register">
-                                    <Button variant="contained">Создать аккаунт</Button>
+                                    <Button variant="contained">Create account</Button>
                                 </a>
                             </>
                         )}

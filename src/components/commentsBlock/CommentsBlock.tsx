@@ -19,7 +19,7 @@ export const CommentsBlock = ({
     isLoading = true,
 }: CommentsBlockType): ReturnComponentType => {
     return (
-        <SideBlock title="Комментарии">
+        <SideBlock title="Comments">
             <List>
                 {/* eslint-disable-next-line no-magic-numbers */}
                 {(isLoading ? [...Array(5)] : items).map((obj: any, index: any) => (
