@@ -11,6 +11,5 @@ export type PostPropsType = {
     tags: any;
     children?: ReactNode;
     isFullPost: boolean;
-    isLoading: boolean;
     isEditable: boolean;
 };

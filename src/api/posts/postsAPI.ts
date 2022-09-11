@@ -5,4 +5,7 @@ export const postsAPI = {
     fetchPosts: () => {
         return instance.get<PostType[]>('/posts');
     },
+    fetchTags: () => {
+        return instance.get<string[]>('/tags');
+    },
 };

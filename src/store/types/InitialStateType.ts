@@ -9,5 +9,5 @@ type EntityType<T> = {
 export type PostsInitialStateType = {
     posts: EntityType<PostType>;
     comments: EntityType<any>;
-    tags: EntityType<any>;
+    tags: EntityType<string>;
 };

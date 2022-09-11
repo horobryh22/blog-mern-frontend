@@ -7,39 +7,40 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Skeleton from '@mui/material/Skeleton';
-
-import { TagsBlockType } from './types';
+import { NavLink } from 'react-router-dom';
 
 import { SideBlock } from 'components';
+import { REQUEST_STATUS } from 'enums';
+import { useAppSelector } from 'hooks';
 import { ReturnComponentType } from 'types';
 
-export const TagsBlock = ({
-    items,
-    isLoading = true,
-}: TagsBlockType): ReturnComponentType => {
+export const TagsBlock = (): ReturnComponentType => {
+    const tags = useAppSelector(state => state.posts.tags.items);
+    const tagsStatus = useAppSelector(state => state.posts.tags.status);
+    const isTagsLoading = tagsStatus === REQUEST_STATUS.LOADING;
+
     return (
         <SideBlock title="Tags">
             <List>
-                {/* eslint-disable-next-line no-magic-numbers */}
-                {(isLoading ? [...Array(5)] : items).map((name: any, i: any) => (
-                    <a
+                {(isTagsLoading ? [...Array(5)] : tags).map((tag, i: any) => (
+                    <NavLink
                         key={i}
                         style={{ textDecoration: 'none', color: 'black' }}
-                        href={`/tags/${name}`}
+                        to={`/tags/${tag}`}
                     >
                         <ListItem disablePadding>
                             <ListItemButton>
                                 <ListItemIcon>
                                     <TagIcon />
                                 </ListItemIcon>
-                                {isLoading ? (
+                                {isTagsLoading ? (
                                     <Skeleton width={100} />
                                 ) : (
-                                    <ListItemText primary={name} />
+                                    <ListItemText primary={tag} />
                                 )}
                             </ListItemButton>
                         </ListItem>
-                    </a>
+                    </NavLink>
                 ))}
             </List>
         </SideBlock>

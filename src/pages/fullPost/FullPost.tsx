@@ -20,7 +20,6 @@ export const FullPost = (): ReturnComponentType => {
                 commentsCount={3}
                 tags={['react', 'fun', 'typescript']}
                 isFullPost
-                isLoading={false}
                 isEditable={false}
             >
                 <p>

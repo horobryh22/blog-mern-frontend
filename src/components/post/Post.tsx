@@ -11,7 +11,7 @@ import { NavLink } from 'react-router-dom';
 import styles from './Post.module.scss';
 import { PostPropsType } from './types';
 
-import { PostSkeleton, UserInfo } from 'components';
+import { UserInfo } from 'components';
 import { ReturnComponentType } from 'types';
 
 export const Post = ({
@@ -25,13 +25,8 @@ export const Post = ({
     tags,
     children,
     isFullPost,
-    isLoading,
     isEditable,
 }: PostPropsType): ReturnComponentType => {
-    if (isLoading) {
-        return <PostSkeleton />;
-    }
-
     const onClickRemove = (): void => {};
 
     return (

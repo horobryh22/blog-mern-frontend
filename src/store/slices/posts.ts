@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 import { REQUEST_STATUS } from 'enums';
-import { fetchPosts } from 'store/thunks';
+import { fetchPosts, fetchTags } from 'store/thunks';
 import { PostsInitialStateType } from 'store/types';
 
 const initialState: PostsInitialStateType = {
@@ -30,6 +30,23 @@ export const postsSlice = createSlice({
         });
         builder.addCase(fetchPosts.pending, state => {
             state.posts.status = REQUEST_STATUS.LOADING;
+            state.posts.items = [];
+        });
+        builder.addCase(fetchPosts.rejected, state => {
+            state.posts.status = REQUEST_STATUS.ERROR;
+            state.posts.items = [];
+        });
+        builder.addCase(fetchTags.fulfilled, (state, action) => {
+            state.tags.items = action.payload;
+            state.tags.status = REQUEST_STATUS.SUCCESS;
+        });
+        builder.addCase(fetchTags.pending, state => {
+            state.tags.status = REQUEST_STATUS.LOADING;
+            state.posts.items = [];
+        });
+        builder.addCase(fetchTags.rejected, state => {
+            state.tags.status = REQUEST_STATUS.ERROR;
+            state.posts.items = [];
         });
     },
 });
