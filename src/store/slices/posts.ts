@@ -42,11 +42,11 @@ export const postsSlice = createSlice({
         });
         builder.addCase(fetchTags.pending, state => {
             state.tags.status = REQUEST_STATUS.LOADING;
-            state.posts.items = [];
+            state.tags.items = [];
         });
         builder.addCase(fetchTags.rejected, state => {
             state.tags.status = REQUEST_STATUS.ERROR;
-            state.posts.items = [];
+            state.tags.items = [];
         });
     },
 });

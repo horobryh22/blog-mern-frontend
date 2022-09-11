@@ -7,14 +7,15 @@ import Tabs from '@mui/material/Tabs';
 import { CommentsBlock, Post, PostSkeleton, TagsBlock } from 'components';
 import { REQUEST_STATUS } from 'enums';
 import { useAppDispatch, useAppSelector } from 'hooks';
+import { selectPosts, selectPostStatus } from 'store/selectors';
 import { fetchPosts, fetchTags } from 'store/thunks';
 import { ReturnComponentType } from 'types';
 
 export const Home = (): ReturnComponentType => {
     const dispatch = useAppDispatch();
 
-    const posts = useAppSelector(state => state.posts.posts.items);
-    const postStatus = useAppSelector(state => state.posts.posts.status);
+    const posts = useAppSelector(selectPosts);
+    const postStatus = useAppSelector(selectPostStatus);
     const isPostsLoading = postStatus === REQUEST_STATUS.LOADING;
 
     useEffect(() => {

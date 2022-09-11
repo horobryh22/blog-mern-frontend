@@ -56,7 +56,11 @@ export const Post = ({
                     <h2
                         className={clsx(styles.title, { [styles.titleFull]: isFullPost })}
                     >
-                        {isFullPost ? title : <a href={`/posts/${_id}`}>{title}</a>}
+                        {isFullPost ? (
+                            title
+                        ) : (
+                            <NavLink to={`/posts/${_id}`}>{title}</NavLink>
+                        )}
                     </h2>
                     <ul className={styles.tags}>
                         {tags.map((name: any) => (
