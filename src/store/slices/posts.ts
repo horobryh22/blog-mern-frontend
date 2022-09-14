@@ -51,12 +51,10 @@ export const postsSlice = createSlice({
             state.tags.items = [];
         });
         builder.addCase(fetchOnePost.fulfilled, (state, action) => {
-            console.log('fullfield');
             state.posts.currentItem = action.payload;
             state.posts.status = REQUEST_STATUS.SUCCESS;
         });
         builder.addCase(fetchOnePost.pending, state => {
-            console.log('loading');
             state.posts.status = REQUEST_STATUS.LOADING;
             state.posts.currentItem = {} as PostType;
         });

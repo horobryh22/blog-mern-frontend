@@ -2,18 +2,18 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import { AxiosError } from 'axios';
 
 import { authAPI } from 'api';
-import { UserDataType } from 'api/types';
+import { FormValuesType, UserDataType } from 'api/types';
 import { REQUEST_STATUS } from 'enums';
 import { setAppStatus } from 'store/slices';
 
-export const fetchUserData = createAsyncThunk<
+export const login = createAsyncThunk<
     UserDataType,
-    void,
+    FormValuesType,
     { rejectValue: string }
->('auth/fetchUserData', async (_, { rejectWithValue, dispatch }) => {
+>('auth/fetchUserData', async ({ password, email }, { rejectWithValue, dispatch }) => {
     try {
         dispatch(setAppStatus(REQUEST_STATUS.LOADING));
-        const response = await authAPI.fetchUserData();
+        const response = await authAPI.fetchUserData({ email, password });
 
         return response.data;
     } catch (e) {

@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { REQUEST_STATUS } from 'enums';
+import { initializeApp } from 'store/thunks';
 import { AppInitialStateType } from 'store/types';
 
 const initialState: AppInitialStateType = {
@@ -16,7 +17,18 @@ export const appSlice = createSlice({
             state.status = action.payload;
         },
     },
-    extraReducers: {},
+    extraReducers: builder => {
+        builder
+            .addCase(initializeApp.fulfilled, state => {
+                state.isInitialized = true;
+            })
+            .addCase(initializeApp.pending, state => {
+                state.isInitialized = false;
+            })
+            .addCase(initializeApp.rejected, state => {
+                state.isInitialized = true;
+            });
+    },
 });
 
 export const { setAppStatus } = appSlice.actions;

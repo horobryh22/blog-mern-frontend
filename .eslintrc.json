@@ -92,12 +92,8 @@
             }
         ],
         "no-use-before-define": "off",
-        "no-param-reassign": ["error", {
-            "props": true,
-            "ignorePropertyModificationsFor": [
-                "state",
-                "self"
-            ]
+        "no-param-reassign": [2, {
+            "props": false
         }],
         "react/display-name": "off",
         "react/react-in-jsx-scope": "off",

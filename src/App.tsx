@@ -1,18 +1,42 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import './App.css';
+import { CircularProgress } from '@mui/material';
 import Container from '@mui/material/Container';
 import { Route, Routes } from 'react-router-dom';
 
 import { Header, SimpleBackdrop } from 'components';
 import { REQUEST_STATUS } from 'enums';
-import { useAppSelector } from 'hooks';
+import { useAppDispatch, useAppSelector } from 'hooks';
 import { AddPost, FullPost, Home, Login, Registration } from 'pages';
-import { selectAppStatus } from 'store/selectors';
+import { selectAppStatus, selectIsInitialized } from 'store/selectors';
+import { initializeApp } from 'store/thunks';
 import { ReturnComponentType } from 'types';
 
 const App = (): ReturnComponentType => {
+    const dispatch = useAppDispatch();
+
+    const isAppInitialized = useAppSelector(selectIsInitialized);
     const isLoading = useAppSelector(selectAppStatus);
+
+    useEffect(() => {
+        dispatch(initializeApp());
+    }, []);
+
+    if (!isAppInitialized) {
+        return (
+            <div
+                style={{
+                    position: 'fixed',
+                    top: '47.5%',
+                    textAlign: 'center',
+                    width: '100%',
+                }}
+            >
+                <CircularProgress />
+            </div>
+        );
+    }
 
     return (
         <>

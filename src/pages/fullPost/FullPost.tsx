@@ -5,6 +5,7 @@ import { useParams } from 'react-router-dom';
 import { CommentsBlock, Index, Post, PostSkeleton } from 'components';
 import { REQUEST_STATUS } from 'enums';
 import { useAppDispatch, useAppSelector } from 'hooks';
+import { selectPost, selectPostStatus } from 'store/selectors';
 import { fetchOnePost } from 'store/thunks';
 import { ReturnComponentType } from 'types';
 
@@ -13,8 +14,8 @@ export const FullPost = (): ReturnComponentType => {
 
     const { id } = useParams();
 
-    const post = useAppSelector(state => state.posts.posts.currentItem);
-    const postStatus = useAppSelector(state => state.posts.posts.status);
+    const post = useAppSelector(selectPost);
+    const postStatus = useAppSelector(selectPostStatus);
 
     useEffect(() => {
         if (id) {
