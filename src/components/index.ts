@@ -6,3 +6,4 @@ export { UserInfo } from './userInfo/UserInfo';
 export { SideBlock } from './sideBlock/SideBlock';
 export { CommentsBlock } from './commentsBlock/CommentsBlock';
 export { TagsBlock } from './tagsBlock/TagsBlock';
+export { SimpleBackdrop } from './simpleBackdrop/SimpleBackdrop';

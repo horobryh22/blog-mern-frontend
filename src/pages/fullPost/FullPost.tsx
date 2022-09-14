@@ -2,11 +2,10 @@ import React, { useEffect } from 'react';
 
 import { useParams } from 'react-router-dom';
 
-import { PostType } from 'api/types';
-import { CommentsBlock, Index, Post } from 'components';
+import { CommentsBlock, Index, Post, PostSkeleton } from 'components';
+import { REQUEST_STATUS } from 'enums';
 import { useAppDispatch, useAppSelector } from 'hooks';
-import { selectPosts } from 'store/selectors';
-import { fetchPosts } from 'store/thunks';
+import { fetchOnePost } from 'store/thunks';
 import { ReturnComponentType } from 'types';
 
 export const FullPost = (): ReturnComponentType => {
@@ -14,35 +13,37 @@ export const FullPost = (): ReturnComponentType => {
 
     const { id } = useParams();
 
-    const posts = useAppSelector(selectPosts);
-    const selectedPost = posts.find(post => post._id === id) || ({} as PostType);
+    const post = useAppSelector(state => state.posts.posts.currentItem);
+    const postStatus = useAppSelector(state => state.posts.posts.status);
 
     useEffect(() => {
-        dispatch(fetchPosts());
+        if (id) {
+            dispatch(fetchOnePost(id));
+        }
     }, []);
 
-    if (!Object.keys(selectedPost).length) {
-        return <div>LOADING . . .</div>;
+    if (postStatus === REQUEST_STATUS.LOADING || !Object.keys(post).length) {
+        return <PostSkeleton itemsCount={1} />;
     }
 
     return (
         <>
             <Post
-                _id={selectedPost._id}
-                title={selectedPost.title}
-                imageUrl={selectedPost.imageUrl}
+                _id={post._id}
+                title={post.title}
+                imageUrl={post.imageUrl}
                 user={{
                     avatarUrl: 'https://mui.com/static/images/avatar/1.jpg',
-                    fullName: selectedPost.user.fullName,
+                    fullName: post.user.fullName,
                 }}
-                createdAt={selectedPost.createdAt}
-                viewsCount={selectedPost.viewsCount}
+                createdAt={post.createdAt}
+                viewsCount={post.viewsCount}
                 commentsCount={3}
-                tags={selectedPost.tags}
+                tags={post.tags}
                 isFullPost
                 isEditable={false}
             >
-                <p>{selectedPost.text}</p>
+                <p>{post.text}</p>
             </Post>
             <CommentsBlock
                 items={[

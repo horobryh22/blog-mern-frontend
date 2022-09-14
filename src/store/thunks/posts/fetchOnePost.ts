@@ -6,12 +6,12 @@ import { PostType } from 'api/types';
 import { REQUEST_STATUS } from 'enums';
 import { setAppStatus } from 'store/slices';
 
-export const fetchPosts = createAsyncThunk<PostType[], void, { rejectValue: string }>(
-    'posts/fetchPosts',
-    async (_, { rejectWithValue, dispatch }) => {
+export const fetchOnePost = createAsyncThunk<PostType, string, { rejectValue: string }>(
+    'posts/fetchOnePost',
+    async (id, { rejectWithValue, dispatch }) => {
         try {
             dispatch(setAppStatus(REQUEST_STATUS.LOADING));
-            const response = await postsAPI.fetchPosts();
+            const response = await postsAPI.fetchOnePost(id);
 
             return response.data;
         } catch (e) {

@@ -1,21 +1,23 @@
 import { createSlice } from '@reduxjs/toolkit';
 
+import { PostType } from 'api/types';
 import { REQUEST_STATUS } from 'enums';
-import { fetchPosts, fetchTags } from 'store/thunks';
+import { fetchOnePost, fetchPosts, fetchTags } from 'store/thunks';
 import { PostsInitialStateType } from 'store/types';
 
 const initialState: PostsInitialStateType = {
     posts: {
         items: [],
-        status: REQUEST_STATUS.SUCCESS,
+        currentItem: {} as PostType,
+        status: REQUEST_STATUS.IDLE,
     },
     comments: {
         items: [],
-        status: REQUEST_STATUS.SUCCESS,
+        status: REQUEST_STATUS.IDLE,
     },
     tags: {
         items: [],
-        status: REQUEST_STATUS.SUCCESS,
+        status: REQUEST_STATUS.IDLE,
     },
 };
 
@@ -47,6 +49,20 @@ export const postsSlice = createSlice({
         builder.addCase(fetchTags.rejected, state => {
             state.tags.status = REQUEST_STATUS.ERROR;
             state.tags.items = [];
+        });
+        builder.addCase(fetchOnePost.fulfilled, (state, action) => {
+            console.log('fullfield');
+            state.posts.currentItem = action.payload;
+            state.posts.status = REQUEST_STATUS.SUCCESS;
+        });
+        builder.addCase(fetchOnePost.pending, state => {
+            console.log('loading');
+            state.posts.status = REQUEST_STATUS.LOADING;
+            state.posts.currentItem = {} as PostType;
+        });
+        builder.addCase(fetchOnePost.rejected, state => {
+            state.posts.status = REQUEST_STATUS.ERROR;
+            state.posts.currentItem = {} as PostType;
         });
     },
 });
