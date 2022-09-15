@@ -1,8 +1,8 @@
+import { UserDataType } from 'api/types';
 import { REQUEST_STATUS } from 'enums';
-import { Nullable } from 'types';
 
 export type AuthInitialStateType = {
-    data: Nullable<any>;
+    data: UserDataType;
     status: REQUEST_STATUS;
     isUserLogged: boolean;
 };

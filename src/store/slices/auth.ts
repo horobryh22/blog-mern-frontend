@@ -1,11 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit';
 
+import { UserDataType } from 'api/types';
 import { REQUEST_STATUS } from 'enums';
-import { login, me } from 'store/thunks';
+import { login, me, register } from 'store/thunks';
 import { AuthInitialStateType } from 'store/types';
 
 const initialState: AuthInitialStateType = {
-    data: null,
+    data: {} as UserDataType,
     isUserLogged: false,
     status: REQUEST_STATUS.SUCCESS,
 };
@@ -15,7 +16,7 @@ export const authSlice = createSlice({
     initialState,
     reducers: {
         logout: state => {
-            state.data = null;
+            state.data = {} as UserDataType;
             state.status = REQUEST_STATUS.IDLE;
             state.isUserLogged = false;
         },
@@ -30,12 +31,12 @@ export const authSlice = createSlice({
             .addCase(login.pending, state => {
                 state.status = REQUEST_STATUS.LOADING;
                 state.isUserLogged = false;
-                state.data = null;
+                state.data = {} as UserDataType;
             })
             .addCase(login.rejected, state => {
                 state.status = REQUEST_STATUS.ERROR;
                 state.isUserLogged = false;
-                state.data = null;
+                state.data = {} as UserDataType;
             })
             .addCase(me.fulfilled, (state, action) => {
                 state.data = action.payload;
@@ -45,12 +46,27 @@ export const authSlice = createSlice({
             .addCase(me.pending, state => {
                 state.status = REQUEST_STATUS.LOADING;
                 state.isUserLogged = false;
-                state.data = null;
+                state.data = {} as UserDataType;
             })
             .addCase(me.rejected, state => {
                 state.status = REQUEST_STATUS.ERROR;
                 state.isUserLogged = false;
-                state.data = null;
+                state.data = {} as UserDataType;
+            })
+            .addCase(register.fulfilled, (state, action) => {
+                state.data = action.payload;
+                state.isUserLogged = true;
+                state.status = REQUEST_STATUS.SUCCESS;
+            })
+            .addCase(register.pending, state => {
+                state.status = REQUEST_STATUS.LOADING;
+                state.isUserLogged = false;
+                state.data = {} as UserDataType;
+            })
+            .addCase(register.rejected, state => {
+                state.status = REQUEST_STATUS.ERROR;
+                state.isUserLogged = false;
+                state.data = {} as UserDataType;
             });
     },
 });

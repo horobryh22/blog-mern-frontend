@@ -12,6 +12,8 @@ import styles from './Post.module.scss';
 import { PostPropsType } from './types';
 
 import { UserInfo } from 'components';
+import { useAppDispatch } from 'hooks';
+import { deletePost } from 'store/thunks/posts/deletePost';
 import { ReturnComponentType } from 'types';
 
 export const Post = ({
@@ -27,7 +29,11 @@ export const Post = ({
     isFullPost,
     isEditable,
 }: PostPropsType): ReturnComponentType => {
-    const onClickRemove = (): void => {};
+    const dispatch = useAppDispatch();
+
+    const onClickRemove = (): void => {
+        dispatch(deletePost(_id));
+    };
 
     return (
         <div className={clsx(styles.root, { [styles.rootFull]: isFullPost })}>

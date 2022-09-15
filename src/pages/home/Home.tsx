@@ -17,6 +17,7 @@ export const Home = (): ReturnComponentType => {
     const posts = useAppSelector(selectPosts);
     const postStatus = useAppSelector(selectPostStatus);
     const isPostsLoading = postStatus === REQUEST_STATUS.LOADING;
+    const authUserId = useAppSelector(state => state.auth.data._id);
 
     useEffect(() => {
         dispatch(fetchPosts());
@@ -25,19 +26,19 @@ export const Home = (): ReturnComponentType => {
 
     const mappedPosts = posts.map(post => (
         <Post
-            key={post._id}
-            _id={post._id}
-            title={post.title}
-            imageUrl={post.imageUrl}
+            key={post?._id}
+            _id={post?._id}
+            title={post?.title}
+            imageUrl={post?.imageUrl}
             user={{
                 avatarUrl: 'https://mui.com/static/images/avatar/1.jpg',
-                fullName: post.user.fullName,
+                fullName: post?.user?.fullName,
             }}
-            createdAt={post.createdAt}
-            viewsCount={post.viewsCount}
+            createdAt={post?.createdAt}
+            viewsCount={post?.viewsCount}
             commentsCount={3}
-            tags={post.tags}
-            isEditable
+            tags={post?.tags}
+            isEditable={post?.user?._id === authUserId}
             isFullPost={false}
         />
     ));

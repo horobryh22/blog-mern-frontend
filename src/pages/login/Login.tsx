@@ -22,7 +22,7 @@ export const Login = (): ReturnComponentType => {
         handleSubmit,
         control,
         formState: { errors },
-    } = useForm<FormValuesType>({
+    } = useForm<Omit<FormValuesType, 'fullName'>>({
         defaultValues: {
             email: '',
             password: '',
@@ -30,9 +30,12 @@ export const Login = (): ReturnComponentType => {
         mode: 'onChange',
     });
 
-    const iseUserLogged = useAppSelector(isUserLogged);
+    const isLogged = useAppSelector(isUserLogged);
 
-    const onSubmit = async ({ email, password }: FormValuesType): Promise<void> => {
+    const onSubmit = async ({
+        email,
+        password,
+    }: Omit<FormValuesType, 'fullName'>): Promise<void> => {
         const data = await dispatch(login({ email, password }));
 
         if (!data.payload) return;
@@ -40,11 +43,11 @@ export const Login = (): ReturnComponentType => {
         if (typeof data.payload === 'string') return;
 
         if ('token' in data.payload) {
-            window.localStorage.setItem('token', data.payload.token);
+            window.localStorage.setItem('token', data.payload.token!);
         }
     };
 
-    if (iseUserLogged) return <Navigate to="/" />;
+    if (isLogged) return <Navigate to="/" />;
 
     return (
         <Paper classes={{ root: styles.root }}>
@@ -70,8 +73,8 @@ export const Login = (): ReturnComponentType => {
                             {...field}
                             className={styles.field}
                             label="Email"
-                            error={Boolean(errors?.email?.message)}
-                            helperText={errors?.email?.message}
+                            error={Boolean(errors.email?.message)}
+                            helperText={errors.email?.message}
                             fullWidth
                         />
                     )}
@@ -95,8 +98,8 @@ export const Login = (): ReturnComponentType => {
                             className={styles.field}
                             type="password"
                             label="Password"
-                            error={Boolean(errors?.password?.message)}
-                            helperText={errors?.password?.message}
+                            error={Boolean(errors.password?.message)}
+                            helperText={errors.password?.message}
                             fullWidth
                         />
                     )}

@@ -4,5 +4,5 @@ export type UserDataType = {
     email: string;
     createdAt: string;
     updatedAt: string;
-    token: string;
+    token?: string;
 };

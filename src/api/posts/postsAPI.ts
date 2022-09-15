@@ -11,4 +11,7 @@ export const postsAPI = {
     fetchTags: () => {
         return instance.get<string[]>('/tags');
     },
+    deletePost: (id: string) => {
+        return instance.delete(`/posts/${id}`);
+    },
 };

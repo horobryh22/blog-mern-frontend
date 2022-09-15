@@ -6,14 +6,14 @@ import { FormValuesType, UserDataType } from 'api/types';
 import { REQUEST_STATUS } from 'enums';
 import { setAppStatus } from 'store/slices';
 
-export const login = createAsyncThunk<
+export const register = createAsyncThunk<
     UserDataType,
-    Omit<FormValuesType, 'fullName'>,
+    FormValuesType,
     { rejectValue: string }
->('auth/login', async ({ password, email }, { rejectWithValue, dispatch }) => {
+>('auth/register', async (userData, { rejectWithValue, dispatch }) => {
     try {
         dispatch(setAppStatus(REQUEST_STATUS.LOADING));
-        const response = await authAPI.login({ email, password });
+        const response = await authAPI.register(userData);
 
         return response.data;
     } catch (e) {
