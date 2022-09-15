@@ -12,14 +12,14 @@ import styles from './Registration.module.scss';
 
 import { FormValuesType } from 'api/types';
 import { useAppDispatch, useAppSelector } from 'hooks';
-import { isUserLogged } from 'store/selectors';
+import { selectIsUserLogged } from 'store/selectors';
 import { register } from 'store/thunks';
 import { ReturnComponentType } from 'types';
 
 export const Registration = (): ReturnComponentType => {
     const dispatch = useAppDispatch();
 
-    const isLogged = useAppSelector(isUserLogged);
+    const isUserLogged = useAppSelector(selectIsUserLogged);
 
     const {
         handleSubmit,
@@ -37,7 +37,7 @@ export const Registration = (): ReturnComponentType => {
         dispatch(register(values));
     };
 
-    if (isLogged) return <Navigate to="/" />;
+    if (isUserLogged) return <Navigate to="/" />;
 
     return (
         <Paper classes={{ root: styles.root }}>

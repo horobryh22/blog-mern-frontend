@@ -7,7 +7,7 @@ import Tabs from '@mui/material/Tabs';
 import { CommentsBlock, Post, PostSkeleton, TagsBlock } from 'components';
 import { REQUEST_STATUS } from 'enums';
 import { useAppDispatch, useAppSelector } from 'hooks';
-import { selectPosts, selectPostStatus } from 'store/selectors';
+import { selectAuthUserId, selectPosts, selectPostStatus } from 'store/selectors';
 import { fetchPosts, fetchTags } from 'store/thunks';
 import { ReturnComponentType } from 'types';
 
@@ -17,31 +17,33 @@ export const Home = (): ReturnComponentType => {
     const posts = useAppSelector(selectPosts);
     const postStatus = useAppSelector(selectPostStatus);
     const isPostsLoading = postStatus === REQUEST_STATUS.LOADING;
-    const authUserId = useAppSelector(state => state.auth.data._id);
+    const authUserId = useAppSelector(selectAuthUserId);
 
     useEffect(() => {
         dispatch(fetchPosts());
         dispatch(fetchTags());
     }, []);
 
-    const mappedPosts = posts.map(post => (
-        <Post
-            key={post?._id}
-            _id={post?._id}
-            title={post?.title}
-            imageUrl={post?.imageUrl}
-            user={{
-                avatarUrl: 'https://mui.com/static/images/avatar/1.jpg',
-                fullName: post?.user?.fullName,
-            }}
-            createdAt={post?.createdAt}
-            viewsCount={post?.viewsCount}
-            commentsCount={3}
-            tags={post?.tags}
-            isEditable={post?.user?._id === authUserId}
-            isFullPost={false}
-        />
-    ));
+    const mappedPosts =
+        Object.keys(posts).length &&
+        posts.map(post => (
+            <Post
+                key={post._id}
+                _id={post._id}
+                title={post.title}
+                imageUrl={post.imageUrl}
+                user={{
+                    avatarUrl: 'https://mui.com/static/images/avatar/1.jpg',
+                    fullName: post.user.fullName,
+                }}
+                createdAt={post.createdAt}
+                viewsCount={post.viewsCount}
+                commentsCount={3}
+                tags={post.tags}
+                isEditable={post.user._id === authUserId}
+                isFullPost={false}
+            />
+        ));
 
     return (
         <>

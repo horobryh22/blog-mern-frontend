@@ -7,14 +7,14 @@ import { NavLink } from 'react-router-dom';
 import styles from './Header.module.scss';
 
 import { useAppDispatch, useAppSelector } from 'hooks';
-import { isUserLogged } from 'store/selectors';
+import { selectIsUserLogged } from 'store/selectors';
 import { logout } from 'store/slices';
 import { ReturnComponentType } from 'types';
 
 export const Header = (): ReturnComponentType => {
     const dispatch = useAppDispatch();
 
-    const iseUserLogged = useAppSelector(isUserLogged);
+    const isUserLogged = useAppSelector(selectIsUserLogged);
 
     const onClickLogout = (): void => {
         dispatch(logout());
@@ -29,9 +29,9 @@ export const Header = (): ReturnComponentType => {
                         <div>KHOROBRYKH BLOG</div>
                     </NavLink>
                     <div className={styles.buttons}>
-                        {iseUserLogged ? (
+                        {isUserLogged ? (
                             <>
-                                <NavLink to="/posts/create">
+                                <NavLink to="/new-post">
                                     <Button variant="contained">Create article</Button>
                                 </NavLink>
                                 <Button

@@ -11,7 +11,7 @@ import styles from './Login.module.scss';
 
 import { FormValuesType } from 'api/types';
 import { useAppDispatch, useAppSelector } from 'hooks';
-import { isUserLogged } from 'store/selectors';
+import { selectIsUserLogged } from 'store/selectors';
 import { login } from 'store/thunks';
 import { ReturnComponentType } from 'types';
 
@@ -30,7 +30,7 @@ export const Login = (): ReturnComponentType => {
         mode: 'onChange',
     });
 
-    const isLogged = useAppSelector(isUserLogged);
+    const isUserLogged = useAppSelector(selectIsUserLogged);
 
     const onSubmit = async ({
         email,
@@ -47,7 +47,7 @@ export const Login = (): ReturnComponentType => {
         }
     };
 
-    if (isLogged) return <Navigate to="/" />;
+    if (isUserLogged) return <Navigate to="/" />;
 
     return (
         <Paper classes={{ root: styles.root }}>
