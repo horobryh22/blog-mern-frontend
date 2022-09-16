@@ -2,23 +2,29 @@ import React, { ChangeEvent, useRef, useState } from 'react';
 
 import { Paper, TextField } from '@mui/material';
 import Button from '@mui/material/Button';
-import { Navigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 import SimpleMDE from 'react-simplemde-editor';
 
 import styles from './AddPost.module.scss';
 
 import 'easymde/dist/easymde.min.css';
 import { instance } from 'api/config';
-import { useAppSelector } from 'hooks';
+import { useAppDispatch, useAppSelector } from 'hooks';
 import { selectIsUserLogged } from 'store/selectors';
+import { createPost } from 'store/thunks';
 import { ReturnComponentType } from 'types';
 
 export const AddPost = (): ReturnComponentType => {
+    const dispatch = useAppDispatch();
+
+    const navigate = useNavigate();
+
     const isUserLogged = useAppSelector(selectIsUserLogged);
+    const createdPostId = useAppSelector(state => state.posts.posts.currentItem._id);
 
     const inputFileRef = useRef<HTMLInputElement | null>(null);
 
-    const [value, setValue] = React.useState('');
+    const [text, setText] = React.useState('');
     const [title, setTitle] = React.useState('');
     const [tags, setTags] = React.useState('');
     const [imageUrl, setImageUrl] = useState('');
@@ -45,7 +51,7 @@ export const AddPost = (): ReturnComponentType => {
     };
 
     const onChange = React.useCallback((value: string) => {
-        setValue(value);
+        setText(value);
     }, []);
 
     const handleTitleChange = (
@@ -58,6 +64,14 @@ export const AddPost = (): ReturnComponentType => {
         e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
     ): void => {
         setTags(e.currentTarget.value);
+    };
+
+    const createNewPost = async (): Promise<void> => {
+        await dispatch(createPost({ text, title, tags: tags.split(', '), imageUrl }));
+
+        if (createdPostId) {
+            navigate(`/posts/${createdPostId}`);
+        }
     };
 
     const options: any = React.useMemo(
@@ -123,12 +137,12 @@ export const AddPost = (): ReturnComponentType => {
             />
             <SimpleMDE
                 className={styles.editor}
-                value={value}
+                value={text}
                 onChange={onChange}
                 options={options}
             />
             <div className={styles.buttons}>
-                <Button size="large" variant="contained">
+                <Button size="large" variant="contained" onClick={createNewPost}>
                     Publish
                 </Button>
                 <a href="/">

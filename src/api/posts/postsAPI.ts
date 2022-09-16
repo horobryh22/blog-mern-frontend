@@ -1,5 +1,5 @@
 import { instance } from 'api/config';
-import { PostType } from 'api/types';
+import { PostDataType, PostType } from 'api/types';
 
 export const postsAPI = {
     fetchPosts: () => {
@@ -13,5 +13,8 @@ export const postsAPI = {
     },
     deletePost: (id: string) => {
         return instance.delete(`/posts/${id}`);
+    },
+    createPost: (postData: PostDataType) => {
+        return instance.post<PostType>(`/posts`, postData);
     },
 };
