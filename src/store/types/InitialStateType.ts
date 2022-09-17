@@ -6,6 +6,7 @@ type EntityType<T> = T extends PostType
           items: T[];
           status: REQUEST_STATUS;
           currentItem: T;
+          totalCount: number;
       }
     : { items: T[]; status: REQUEST_STATUS };
 

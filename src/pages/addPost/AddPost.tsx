@@ -20,7 +20,6 @@ export const AddPost = (): ReturnComponentType => {
     const navigate = useNavigate();
 
     const isUserLogged = useAppSelector(selectIsUserLogged);
-    const createdPostId = useAppSelector(state => state.posts.posts.currentItem._id);
 
     const inputFileRef = useRef<HTMLInputElement | null>(null);
 
@@ -67,10 +66,12 @@ export const AddPost = (): ReturnComponentType => {
     };
 
     const createNewPost = async (): Promise<void> => {
-        await dispatch(createPost({ text, title, tags: tags.split(', '), imageUrl }));
+        const response = await dispatch(
+            createPost({ text, title, tags: tags.split(', '), imageUrl }),
+        );
 
-        if (createdPostId) {
-            navigate(`/posts/${createdPostId}`);
+        if (response.payload) {
+            navigate(`/posts/${response.payload}`);
         }
     };
 

@@ -10,7 +10,7 @@ import { ReturnComponentType } from 'types';
 
 export const SideBlock = ({ title, children }: SideBlockType): ReturnComponentType => {
     return (
-        <Paper classes={{ root: styles.root }}>
+        <Paper variant="outlined" classes={{ root: styles.root }}>
             <Typography variant="h6" classes={{ root: styles.title }}>
                 {title}
             </Typography>

@@ -3,7 +3,7 @@ import { PostDataType, PostType } from 'api/types';
 
 export const postsAPI = {
     fetchPosts: () => {
-        return instance.get<PostType[]>('/posts');
+        return instance.get<{ posts: PostType[]; postsTotalCount: number }>('/posts');
     },
     fetchOnePost: (id: string) => {
         return instance.get<PostType>(`/posts/${id}`);

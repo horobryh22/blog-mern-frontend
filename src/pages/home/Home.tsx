@@ -24,14 +24,13 @@ export const Home = (): ReturnComponentType => {
         dispatch(fetchTags());
     }, []);
 
-    const mappedPosts =
-        Object.keys(posts).length &&
+    const mappedPosts = posts.length ? (
         posts.map(post => (
             <Post
                 key={post._id}
                 _id={post._id}
                 title={post.title}
-                imageUrl={post.imageUrl}
+                imageUrl={post.imageUrl ? `http://localhost:4444${post.imageUrl}` : ''}
                 user={{
                     avatarUrl: 'https://mui.com/static/images/avatar/1.jpg',
                     fullName: post.user.fullName,
@@ -43,7 +42,10 @@ export const Home = (): ReturnComponentType => {
                 isEditable={post.user._id === authUserId}
                 isFullPost={false}
             />
-        ));
+        ))
+    ) : (
+        <div>Sorry, not found any posts</div>
+    );
 
     return (
         <>
@@ -53,7 +55,7 @@ export const Home = (): ReturnComponentType => {
             </Tabs>
             <Grid container spacing={4}>
                 <Grid xs={8} item>
-                    {isPostsLoading ? <PostSkeleton itemsCount={5} /> : mappedPosts}
+                    {isPostsLoading ? <PostSkeleton itemsCount={3} /> : mappedPosts}
                 </Grid>
                 <Grid xs={4} item>
                     <TagsBlock />

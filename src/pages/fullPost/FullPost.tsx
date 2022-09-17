@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 
+import ReactMarkdown from 'react-markdown';
 import { useParams } from 'react-router-dom';
 
 import { CommentsBlock, Index, Post, PostSkeleton } from 'components';
@@ -32,7 +33,7 @@ export const FullPost = (): ReturnComponentType => {
             <Post
                 _id={post._id}
                 title={post.title}
-                imageUrl={post.imageUrl}
+                imageUrl={post.imageUrl ? `http://localhost:4444${post.imageUrl}` : ''}
                 user={{
                     avatarUrl: 'https://mui.com/static/images/avatar/1.jpg',
                     fullName: post.user.fullName,
@@ -44,7 +45,7 @@ export const FullPost = (): ReturnComponentType => {
                 isFullPost
                 isEditable={false}
             >
-                <p>{post.text}</p>
+                <ReactMarkdown>{post.text}</ReactMarkdown>
             </Post>
             <CommentsBlock
                 items={[

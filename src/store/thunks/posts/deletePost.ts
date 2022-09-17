@@ -4,15 +4,17 @@ import { AxiosError } from 'axios';
 import { postsAPI } from 'api';
 import { REQUEST_STATUS } from 'enums';
 import { setAppStatus } from 'store/slices';
+import { fetchTags } from 'store/thunks/tags/fetchTags';
 
-export const deletePost = createAsyncThunk<void, string, { rejectValue: string }>(
+export const deletePost = createAsyncThunk<string, string, { rejectValue: string }>(
     'posts/deletePost',
     async (id, { rejectWithValue, dispatch }) => {
         try {
             dispatch(setAppStatus(REQUEST_STATUS.LOADING));
             await postsAPI.deletePost(id);
+            await dispatch(fetchTags());
 
-            await postsAPI.fetchPosts();
+            return id;
         } catch (e) {
             const err = e as AxiosError;
 
