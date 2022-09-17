@@ -2,9 +2,9 @@ import { instance } from 'api/config';
 import { PostDataType, PostType } from 'api/types';
 
 export const postsAPI = {
-    fetchPosts: (sort: string) => {
+    fetchPosts: (sort: string, selectedTag: string) => {
         return instance.get<{ posts: PostType[]; postsTotalCount: number }>(`/posts`, {
-            headers: { sort },
+            headers: { sort, tag: selectedTag },
         });
     },
     fetchOnePost: (id: string) => {

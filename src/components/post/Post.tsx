@@ -13,6 +13,7 @@ import { PostPropsType } from './types';
 
 import { UserInfo } from 'components';
 import { useAppDispatch } from 'hooks';
+import { changeSelectedTag } from 'store/slices';
 import { deletePost } from 'store/thunks';
 import { ReturnComponentType } from 'types';
 
@@ -37,6 +38,10 @@ export const Post = ({
 
     const date = new Date(createdAt);
     const formattedData = date.toLocaleString();
+
+    const handleClick = (tag: string): void => {
+        dispatch(changeSelectedTag(tag));
+    };
 
     return (
         <div className={clsx(styles.root, { [styles.rootFull]: isFullPost })}>
@@ -79,7 +84,12 @@ export const Post = ({
                         {tags[0] &&
                             tags.map((name: string) => (
                                 <li key={name}>
-                                    <NavLink to={`/tag/${name}`}>#{name}</NavLink>
+                                    <NavLink
+                                        to={`/tags/${name}`}
+                                        onClick={() => handleClick(name)}
+                                    >
+                                        #{name}
+                                    </NavLink>
                                 </li>
                             ))}
                     </ul>

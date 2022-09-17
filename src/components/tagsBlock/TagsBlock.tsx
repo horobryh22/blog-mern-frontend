@@ -11,13 +11,20 @@ import { NavLink } from 'react-router-dom';
 
 import { SideBlock } from 'components';
 import { REQUEST_STATUS } from 'enums';
-import { useAppSelector } from 'hooks';
+import { useAppDispatch, useAppSelector } from 'hooks';
+import { changeSelectedTag } from 'store/slices';
 import { ReturnComponentType } from 'types';
 
 export const TagsBlock = (): ReturnComponentType => {
+    const dispatch = useAppDispatch();
+
     const tags = useAppSelector(state => state.posts.tags.items);
     const tagsStatus = useAppSelector(state => state.posts.tags.status);
     const isTagsLoading = tagsStatus === REQUEST_STATUS.LOADING;
+
+    const handleClick = (tag: string): void => {
+        dispatch(changeSelectedTag(tag));
+    };
 
     return (
         <SideBlock title="Tags">
@@ -26,9 +33,10 @@ export const TagsBlock = (): ReturnComponentType => {
                     (tag, i: number) =>
                         tag && (
                             <NavLink
+                                to={`/tags/${tag}`}
                                 key={i}
                                 style={{ textDecoration: 'none', color: 'black' }}
-                                to={`/tags/${tag}`}
+                                onClick={() => handleClick(tag)}
                             >
                                 <ListItem disablePadding>
                                     <ListItemButton>

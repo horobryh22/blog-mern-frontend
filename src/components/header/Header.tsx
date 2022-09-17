@@ -8,7 +8,7 @@ import styles from './Header.module.scss';
 
 import { useAppDispatch, useAppSelector } from 'hooks';
 import { selectIsUserLogged } from 'store/selectors';
-import { logout } from 'store/slices';
+import { changeSelectedTag, logout } from 'store/slices';
 import { ReturnComponentType } from 'types';
 
 export const Header = (): ReturnComponentType => {
@@ -23,11 +23,15 @@ export const Header = (): ReturnComponentType => {
         window.localStorage.removeItem('token');
     };
 
+    const handleClick = (): void => {
+        dispatch(changeSelectedTag(''));
+    };
+
     return (
         <div className={styles.root}>
             <Container maxWidth="lg">
                 <div className={styles.inner}>
-                    <NavLink className={styles.logo} to="/">
+                    <NavLink className={styles.logo} to="/" onClick={handleClick}>
                         <div>KHOROBRYKH BLOG</div>
                     </NavLink>
                     <div className={styles.buttons}>

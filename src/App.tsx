@@ -45,6 +45,7 @@ const App = (): ReturnComponentType => {
                 <SimpleBackdrop open={isLoading === REQUEST_STATUS.LOADING} />
                 <Routes>
                     <Route path="/" element={<Home />} />
+                    <Route path="/tags/:tag" element={<Home />} />
                     <Route path="/new-post" element={<AddPost />} />
                     <Route path="/login" element={<Login />} />
                     <Route path="/register" element={<Registration />} />

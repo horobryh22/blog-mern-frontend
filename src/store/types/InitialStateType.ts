@@ -9,7 +9,7 @@ type EntityType<T> = T extends PostType
           totalCount: number;
           sortBy: string;
       }
-    : { items: T[]; status: REQUEST_STATUS };
+    : { items: T[]; status: REQUEST_STATUS; currentItem: T };
 
 export type PostsInitialStateType = {
     posts: EntityType<PostType>;

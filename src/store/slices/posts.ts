@@ -15,10 +15,12 @@ const initialState: PostsInitialStateType = {
     },
     comments: {
         items: [],
+        currentItem: '',
         status: REQUEST_STATUS.IDLE,
     },
     tags: {
         items: [],
+        currentItem: '',
         status: REQUEST_STATUS.IDLE,
     },
 };
@@ -29,6 +31,9 @@ export const postsSlice = createSlice({
     reducers: {
         changeSortBy: (state, action: PayloadAction<string>) => {
             state.posts.sortBy = action.payload;
+        },
+        changeSelectedTag: (state, action: PayloadAction<string>) => {
+            state.tags.currentItem = action.payload;
         },
     },
     extraReducers: builder => {
@@ -85,5 +90,5 @@ export const postsSlice = createSlice({
     },
 });
 
-export const { changeSortBy } = postsSlice.actions;
+export const { changeSortBy, changeSelectedTag } = postsSlice.actions;
 export default postsSlice.reducer;

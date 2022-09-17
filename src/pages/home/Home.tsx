@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import Grid from '@mui/material/Grid';
 import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
+import { useParams } from 'react-router-dom';
 
 import { CommentsBlock, Post, PostSkeleton, TagsBlock } from 'components';
 import { REQUEST_STATUS } from 'enums';
@@ -15,6 +16,8 @@ import { ReturnComponentType } from 'types';
 export const Home = (): ReturnComponentType => {
     const dispatch = useAppDispatch();
 
+    const { tag } = useParams();
+
     const [sortBy, setSortBy] = useState(0);
 
     const posts = useAppSelector(selectPosts);
@@ -25,7 +28,7 @@ export const Home = (): ReturnComponentType => {
     useEffect(() => {
         dispatch(fetchPosts());
         dispatch(fetchTags());
-    }, [sortBy]);
+    }, [sortBy, tag]);
 
     const changeSort = (): void => {
         if (sortBy) {

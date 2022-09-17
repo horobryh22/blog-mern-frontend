@@ -16,7 +16,8 @@ export const fetchPosts = createAsyncThunk<
         dispatch(setAppStatus(REQUEST_STATUS.LOADING));
 
         const sort = getState().posts.posts.sortBy;
-        const response = await postsAPI.fetchPosts(sort);
+        const tag = getState().posts.tags.currentItem;
+        const response = await postsAPI.fetchPosts(sort, tag);
 
         return response.data;
     } catch (e) {
