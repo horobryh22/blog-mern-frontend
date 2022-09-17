@@ -4,7 +4,7 @@ import { AxiosError } from 'axios';
 import { postsAPI } from 'api';
 import { PostDataType } from 'api/types';
 import { REQUEST_STATUS } from 'enums';
-import { setAppStatus } from 'store/slices';
+import { setAppError, setAppStatus } from 'store/slices';
 
 export const createPost = createAsyncThunk<string, PostDataType, { rejectValue: string }>(
     'posts/createPost',
@@ -18,6 +18,7 @@ export const createPost = createAsyncThunk<string, PostDataType, { rejectValue: 
             const err = e as AxiosError;
 
             dispatch(setAppStatus(REQUEST_STATUS.ERROR));
+            dispatch(setAppError(err.message));
 
             return rejectWithValue(err.message);
         } finally {

@@ -22,26 +22,29 @@ export const TagsBlock = (): ReturnComponentType => {
     return (
         <SideBlock title="Tags">
             <List>
-                {(isTagsLoading ? [...Array(5)] : tags).map((tag, i: any) => (
-                    <NavLink
-                        key={i}
-                        style={{ textDecoration: 'none', color: 'black' }}
-                        to={`/tags/${tag}`}
-                    >
-                        <ListItem disablePadding>
-                            <ListItemButton>
-                                <ListItemIcon>
-                                    <TagIcon />
-                                </ListItemIcon>
-                                {isTagsLoading ? (
-                                    <Skeleton width={100} />
-                                ) : (
-                                    <ListItemText primary={tag} />
-                                )}
-                            </ListItemButton>
-                        </ListItem>
-                    </NavLink>
-                ))}
+                {(isTagsLoading ? [...Array(5)] : tags).map(
+                    (tag, i: number) =>
+                        tag && (
+                            <NavLink
+                                key={i}
+                                style={{ textDecoration: 'none', color: 'black' }}
+                                to={`/tags/${tag}`}
+                            >
+                                <ListItem disablePadding>
+                                    <ListItemButton>
+                                        <ListItemIcon>
+                                            <TagIcon />
+                                        </ListItemIcon>
+                                        {isTagsLoading ? (
+                                            <Skeleton width={100} />
+                                        ) : (
+                                            <ListItemText primary={tag} />
+                                        )}
+                                    </ListItemButton>
+                                </ListItem>
+                            </NavLink>
+                        ),
+                )}
             </List>
         </SideBlock>
     );

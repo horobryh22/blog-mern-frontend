@@ -1,9 +1,8 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { PostType } from 'api/types';
 import { REQUEST_STATUS } from 'enums';
-import { fetchOnePost, fetchPosts, fetchTags } from 'store/thunks';
-import { deletePost } from 'store/thunks/posts/deletePost';
+import { fetchOnePost, fetchPosts, fetchTags, deletePost } from 'store/thunks';
 import { PostsInitialStateType } from 'store/types';
 
 const initialState: PostsInitialStateType = {
@@ -12,6 +11,7 @@ const initialState: PostsInitialStateType = {
         currentItem: {} as PostType,
         status: REQUEST_STATUS.IDLE,
         totalCount: 0,
+        sortBy: 'createdAt',
     },
     comments: {
         items: [],
@@ -26,7 +26,11 @@ const initialState: PostsInitialStateType = {
 export const postsSlice = createSlice({
     name: 'posts',
     initialState,
-    reducers: {},
+    reducers: {
+        changeSortBy: (state, action: PayloadAction<string>) => {
+            state.posts.sortBy = action.payload;
+        },
+    },
     extraReducers: builder => {
         // get all posts
         builder.addCase(fetchPosts.fulfilled, (state, action) => {
@@ -81,4 +85,5 @@ export const postsSlice = createSlice({
     },
 });
 
+export const { changeSortBy } = postsSlice.actions;
 export default postsSlice.reducer;

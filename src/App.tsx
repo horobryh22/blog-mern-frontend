@@ -5,7 +5,7 @@ import { CircularProgress } from '@mui/material';
 import Container from '@mui/material/Container';
 import { Route, Routes } from 'react-router-dom';
 
-import { Header, SimpleBackdrop } from 'components';
+import { Header, SimpleBackdrop, SnackBar } from 'components';
 import { REQUEST_STATUS } from 'enums';
 import { useAppDispatch, useAppSelector } from 'hooks';
 import { AddPost, FullPost, Home, Login, Registration } from 'pages';
@@ -51,6 +51,7 @@ const App = (): ReturnComponentType => {
                     <Route path="/posts/:id" element={<FullPost />} />
                     <Route path="/posts/:id/edit" element={<AddPost />} />
                 </Routes>
+                <SnackBar />
             </Container>
         </>
     );
