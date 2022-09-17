@@ -13,7 +13,7 @@ import { PostPropsType } from './types';
 
 import { UserInfo } from 'components';
 import { useAppDispatch } from 'hooks';
-import { deletePost } from 'store/thunks/posts/deletePost';
+import { deletePost } from 'store/thunks';
 import { ReturnComponentType } from 'types';
 
 export const Post = ({
@@ -34,6 +34,9 @@ export const Post = ({
     const onClickRemove = (): void => {
         dispatch(deletePost(_id));
     };
+
+    const date = new Date(createdAt);
+    const formattedData = date.toLocaleString();
 
     return (
         <div className={clsx(styles.root, { [styles.rootFull]: isFullPost })}>
@@ -57,7 +60,11 @@ export const Post = ({
                 />
             )}
             <div className={styles.wrapper}>
-                <UserInfo {...user} additionalText={createdAt} />
+                <UserInfo
+                    avatarUrl="https://mui.com/static/images/avatar/1.jpg"
+                    {...user}
+                    additionalText={formattedData}
+                />
                 <div className={styles.indention}>
                     <h2
                         className={clsx(styles.title, { [styles.titleFull]: isFullPost })}
@@ -69,11 +76,12 @@ export const Post = ({
                         )}
                     </h2>
                     <ul className={styles.tags}>
-                        {tags.map((name: any) => (
-                            <li key={name}>
-                                <NavLink to={`/tag/${name}`}>#{name}</NavLink>
-                            </li>
-                        ))}
+                        {tags[0] &&
+                            tags.map((name: string) => (
+                                <li key={name}>
+                                    <NavLink to={`/tag/${name}`}>#{name}</NavLink>
+                                </li>
+                            ))}
                     </ul>
                     {children && <div className={styles.content}>{children}</div>}
                     <ul className={styles.postDetails}>

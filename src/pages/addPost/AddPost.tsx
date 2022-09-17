@@ -1,32 +1,61 @@
-import React, { ChangeEvent, useRef, useState } from 'react';
+import React, { ChangeEvent, useEffect, useRef, useState } from 'react';
 
 import { Paper, TextField } from '@mui/material';
 import Button from '@mui/material/Button';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import SimpleMDE from 'react-simplemde-editor';
 
 import styles from './AddPost.module.scss';
 
 import 'easymde/dist/easymde.min.css';
-import { instance } from 'api/config';
+import { PostSkeleton } from 'components';
+import { REQUEST_STATUS } from 'enums';
 import { useAppDispatch, useAppSelector } from 'hooks';
-import { selectIsUserLogged } from 'store/selectors';
-import { createPost } from 'store/thunks';
+import { selectIsUserLogged, selectPost, selectPostStatus } from 'store/selectors';
+import { setAppError } from 'store/slices';
+import { createPost, fetchOnePost, updatePost, uploadImage } from 'store/thunks';
 import { ReturnComponentType } from 'types';
 
 export const AddPost = (): ReturnComponentType => {
     const dispatch = useAppDispatch();
 
+    const { id } = useParams();
+
     const navigate = useNavigate();
 
-    const isUserLogged = useAppSelector(selectIsUserLogged);
-
     const inputFileRef = useRef<HTMLInputElement | null>(null);
+
+    const isEditing = Boolean(id);
+    const isUserLogged = useAppSelector(selectIsUserLogged);
+    const post = useAppSelector(selectPost);
+    const postStatus = useAppSelector(selectPostStatus);
 
     const [text, setText] = React.useState('');
     const [title, setTitle] = React.useState('');
     const [tags, setTags] = React.useState('');
     const [imageUrl, setImageUrl] = useState('');
+
+    const postData = { text, title, tags: tags?.split(', '), imageUrl };
+
+    useEffect(() => {
+        if (id) {
+            dispatch(fetchOnePost(id));
+        }
+    }, [id]);
+
+    useEffect(() => {
+        if (id) {
+            setText(post.text);
+            setTitle(post.title);
+            setTags(post.tags?.join(', '));
+            setImageUrl(post.imageUrl);
+        } else {
+            setText('');
+            setTitle('');
+            setTags('');
+            setImageUrl('');
+        }
+    }, [id, post]);
 
     const handleChangeFile = async (e: ChangeEvent<HTMLInputElement>): Promise<void> => {
         try {
@@ -35,13 +64,12 @@ export const AddPost = (): ReturnComponentType => {
                 const file = e.target.files[0];
 
                 formData.append('image', file);
-                const { data } = await instance.post('/upload', formData);
+                const { payload } = await dispatch(uploadImage(formData));
 
-                setImageUrl(data.url);
+                if (payload) setImageUrl(payload);
             }
         } catch (e) {
-            console.warn(e);
-            alert('File was not uploaded');
+            dispatch(setAppError('File was not uploaded'));
         }
     };
 
@@ -53,25 +81,26 @@ export const AddPost = (): ReturnComponentType => {
         setText(value);
     }, []);
 
-    const handleTitleChange = (
-        e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-    ): void => {
+    const handleTitleChange = (e: ChangeEvent<HTMLInputElement>): void => {
         setTitle(e.currentTarget.value);
     };
 
-    const handleTagsChange = (
-        e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-    ): void => {
+    const handleTagsChange = (e: ChangeEvent<HTMLInputElement>): void => {
         setTags(e.currentTarget.value);
     };
 
     const createNewPost = async (): Promise<void> => {
-        const response = await dispatch(
-            createPost({ text, title, tags: tags.split(', '), imageUrl }),
-        );
+        const response = await dispatch(createPost(postData));
 
         if (response.payload) {
             navigate(`/posts/${response.payload}`);
+        }
+    };
+
+    const updateCurrentPost = async (): Promise<void> => {
+        if (id) {
+            await dispatch(updatePost({ postData, id }));
+            navigate(`/posts/${id}`);
         }
     };
 
@@ -91,6 +120,10 @@ export const AddPost = (): ReturnComponentType => {
     );
 
     if (!isUserLogged) return <Navigate to="/" />;
+
+    if (postStatus === REQUEST_STATUS.LOADING) {
+        return <PostSkeleton itemsCount={1} />;
+    }
 
     return (
         <Paper style={{ padding: 30 }}>
@@ -143,8 +176,12 @@ export const AddPost = (): ReturnComponentType => {
                 options={options}
             />
             <div className={styles.buttons}>
-                <Button size="large" variant="contained" onClick={createNewPost}>
-                    Publish
+                <Button
+                    size="large"
+                    variant="contained"
+                    onClick={isEditing ? updateCurrentPost : createNewPost}
+                >
+                    {isEditing ? 'Save' : 'Publish'}
                 </Button>
                 <a href="/">
                     <Button size="large">Cancel</Button>

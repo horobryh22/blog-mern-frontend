@@ -34,10 +34,7 @@ export const FullPost = (): ReturnComponentType => {
                 _id={post._id}
                 title={post.title}
                 imageUrl={post.imageUrl ? `http://localhost:4444${post.imageUrl}` : ''}
-                user={{
-                    avatarUrl: 'https://mui.com/static/images/avatar/1.jpg',
-                    fullName: post.user.fullName,
-                }}
+                user={post.user}
                 createdAt={post.createdAt}
                 viewsCount={post.viewsCount}
                 commentsCount={3}

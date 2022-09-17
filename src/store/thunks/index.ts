@@ -1,6 +1,9 @@
 export { fetchPosts } from './posts/fetchPosts';
 export { fetchOnePost } from './posts/fetchOnePost';
 export { createPost } from './posts/createPost';
+export { deletePost } from './posts/deletePost';
+export { updatePost } from './posts/updatePost';
+export { uploadImage } from './posts/uploadImage';
 export { fetchTags } from './tags/fetchTags';
 export { login } from './auth/login';
 export { register } from './auth/register';

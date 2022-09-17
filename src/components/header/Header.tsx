@@ -2,7 +2,7 @@ import React from 'react';
 
 import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 
 import styles from './Header.module.scss';
 
@@ -13,6 +13,8 @@ import { ReturnComponentType } from 'types';
 
 export const Header = (): ReturnComponentType => {
     const dispatch = useAppDispatch();
+
+    const navigate = useNavigate();
 
     const isUserLogged = useAppSelector(selectIsUserLogged);
 
@@ -31,9 +33,12 @@ export const Header = (): ReturnComponentType => {
                     <div className={styles.buttons}>
                         {isUserLogged ? (
                             <>
-                                <NavLink to="/new-post">
-                                    <Button variant="contained">Create article</Button>
-                                </NavLink>
+                                <Button
+                                    variant="contained"
+                                    onClick={() => navigate('/new-post')}
+                                >
+                                    Create article
+                                </Button>
                                 <Button
                                     onClick={onClickLogout}
                                     variant="contained"

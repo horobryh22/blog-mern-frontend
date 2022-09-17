@@ -49,6 +49,7 @@ const App = (): ReturnComponentType => {
                     <Route path="/login" element={<Login />} />
                     <Route path="/register" element={<Registration />} />
                     <Route path="/posts/:id" element={<FullPost />} />
+                    <Route path="/posts/:id/edit" element={<AddPost />} />
                 </Routes>
             </Container>
         </>
