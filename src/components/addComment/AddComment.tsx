@@ -6,9 +6,17 @@ import TextField from '@mui/material/TextField';
 
 import styles from './AddComment.module.scss';
 
+import { instance } from 'api/config';
 import { ReturnComponentType } from 'types';
 
 export const Index = (): ReturnComponentType => {
+    const handleClick = (): void => {
+        instance.post('/comments', {
+            text: 'First comment',
+            post: '6325fd64c0aa25fd8c5b7d94',
+        });
+    };
+
     return (
         <div className={styles.root}>
             <Avatar
@@ -17,13 +25,15 @@ export const Index = (): ReturnComponentType => {
             />
             <div className={styles.form}>
                 <TextField
-                    label="Написать комментарий"
+                    label="Write a comment"
                     variant="outlined"
                     maxRows={10}
                     multiline
                     fullWidth
                 />
-                <Button variant="contained">Отправить</Button>
+                <Button variant="contained" onClick={handleClick}>
+                    Send
+                </Button>
             </div>
         </div>
     );

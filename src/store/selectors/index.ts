@@ -4,4 +4,6 @@ export { selectAppStatus } from './app/selectAppStatus';
 export { selectIsInitialized } from './app/selectIsInitialized';
 export { selectIsUserLogged } from './auth/selectIsUserLogged';
 export { selectAuthUserId } from './auth/selectAuthUserId';
+export { selectTags } from './posts/selectTags';
+export { selectTagsStatus } from './posts/selectTagsStatus';
 export { selectPost } from './posts/selectPost';

@@ -1,7 +1,9 @@
 import { ReactNode } from 'react';
 
+import { CommentType } from 'api/types';
+
 export type CommentsBlockType = {
-    items: any;
+    items: CommentType[];
     children?: ReactNode;
     isLoading: boolean;
 };

@@ -13,11 +13,6 @@ const initialState: PostsInitialStateType = {
         totalCount: 0,
         sortBy: 'createdAt',
     },
-    comments: {
-        items: [],
-        currentItem: '',
-        status: REQUEST_STATUS.IDLE,
-    },
     tags: {
         items: [],
         currentItem: '',

@@ -12,14 +12,15 @@ import { NavLink } from 'react-router-dom';
 import { SideBlock } from 'components';
 import { REQUEST_STATUS } from 'enums';
 import { useAppDispatch, useAppSelector } from 'hooks';
+import { selectTags, selectTagsStatus } from 'store/selectors';
 import { changeSelectedTag } from 'store/slices';
 import { ReturnComponentType } from 'types';
 
 export const TagsBlock = (): ReturnComponentType => {
     const dispatch = useAppDispatch();
 
-    const tags = useAppSelector(state => state.posts.tags.items);
-    const tagsStatus = useAppSelector(state => state.posts.tags.status);
+    const tags = useAppSelector(selectTags);
+    const tagsStatus = useAppSelector(selectTagsStatus);
     const isTagsLoading = tagsStatus === REQUEST_STATUS.LOADING;
 
     const handleClick = (tag: string): void => {

@@ -77,10 +77,6 @@ export const AddPost = (): ReturnComponentType => {
         setImageUrl('');
     };
 
-    const onChange = React.useCallback((value: string) => {
-        setText(value);
-    }, []);
-
     const handleTitleChange = (e: ChangeEvent<HTMLInputElement>): void => {
         setTitle(e.currentTarget.value);
     };
@@ -89,18 +85,42 @@ export const AddPost = (): ReturnComponentType => {
         setTags(e.currentTarget.value);
     };
 
-    const createNewPost = async (): Promise<void> => {
-        const response = await dispatch(createPost(postData));
+    const onChange = React.useCallback((value: string) => {
+        setText(value);
+    }, []);
 
-        if (response.payload) {
-            navigate(`/posts/${response.payload}`);
+    const createNewPost = async (): Promise<void> => {
+        if (postData.text.length >= 3 && postData.title.length >= 3) {
+            const response = await dispatch(createPost(postData));
+
+            if (response.payload) {
+                navigate(`/posts/${response.payload}`);
+            }
+
+            return;
         }
+
+        dispatch(
+            setAppError(
+                'Title and text are required fields, please type min 3 symbols in each of them:)',
+            ),
+        );
     };
 
     const updateCurrentPost = async (): Promise<void> => {
         if (id) {
-            await dispatch(updatePost({ postData, id }));
-            navigate(`/posts/${id}`);
+            if (postData.text.length >= 3 && postData.title.length >= 3) {
+                await dispatch(updatePost({ postData, id }));
+                navigate(`/posts/${id}`);
+
+                return;
+            }
+
+            dispatch(
+                setAppError(
+                    'Title and text are required fields, please type min 3 symbols in each of them:)',
+                ),
+            );
         }
     };
 

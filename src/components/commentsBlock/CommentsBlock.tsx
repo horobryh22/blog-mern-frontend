@@ -10,6 +10,7 @@ import Skeleton from '@mui/material/Skeleton';
 
 import { CommentsBlockType } from './types';
 
+import { CommentType } from 'api/types';
 import { SideBlock } from 'components';
 import { ReturnComponentType } from 'types';
 
@@ -21,30 +22,33 @@ export const CommentsBlock = ({
     return (
         <SideBlock title="Comments">
             <List>
-                {/* eslint-disable-next-line no-magic-numbers */}
-                {(isLoading ? [...Array(5)] : items).map((obj: any, index: any) => (
-                    // eslint-disable-next-line react/no-array-index-key
-                    <React.Fragment key={index}>
+                {(isLoading ? [...Array(5)] : items).map((comment: CommentType) => (
+                    <React.Fragment key={comment?._id}>
                         <ListItem alignItems="flex-start">
                             <ListItemAvatar>
                                 {isLoading ? (
                                     <Skeleton variant="circular" width={40} height={40} />
                                 ) : (
                                     <Avatar
-                                        alt={obj.user.fullName}
-                                        src={obj.user.avatarUrl}
+                                        alt={comment?.user?.fullName}
+                                        src="https://mui.com/static/images/avatar/1.jpg"
                                     />
                                 )}
                             </ListItemAvatar>
                             {isLoading ? (
-                                <div style={{ display: 'flex', flexDirection: 'column' }}>
+                                <div
+                                    style={{
+                                        display: 'flex',
+                                        flexDirection: 'column',
+                                    }}
+                                >
                                     <Skeleton variant="text" height={25} width={120} />
                                     <Skeleton variant="text" height={18} width={230} />
                                 </div>
                             ) : (
                                 <ListItemText
-                                    primary={obj.user.fullName}
-                                    secondary={obj.text}
+                                    primary={comment?.user?.fullName}
+                                    secondary={comment?.text}
                                 />
                             )}
                         </ListItem>

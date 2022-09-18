@@ -32,12 +32,12 @@ export const Post = ({
 }: PostPropsType): ReturnComponentType => {
     const dispatch = useAppDispatch();
 
+    const date = new Date(createdAt);
+    const formattedData = date.toLocaleString();
+
     const onClickRemove = (): void => {
         dispatch(deletePost(_id));
     };
-
-    const date = new Date(createdAt);
-    const formattedData = date.toLocaleString();
 
     const handleClick = (tag: string): void => {
         dispatch(changeSelectedTag(tag));

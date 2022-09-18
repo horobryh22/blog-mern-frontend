@@ -13,6 +13,5 @@ type EntityType<T> = T extends PostType
 
 export type PostsInitialStateType = {
     posts: EntityType<PostType>;
-    comments: EntityType<string>;
     tags: EntityType<string>;
 };

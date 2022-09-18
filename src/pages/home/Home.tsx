@@ -5,12 +5,14 @@ import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
 import { useParams } from 'react-router-dom';
 
+import classes from './Home.module.scss';
+
 import { CommentsBlock, Post, PostSkeleton, TagsBlock } from 'components';
 import { REQUEST_STATUS } from 'enums';
 import { useAppDispatch, useAppSelector } from 'hooks';
 import { selectAuthUserId, selectPosts, selectPostStatus } from 'store/selectors';
 import { changeSortBy } from 'store/slices';
-import { fetchPosts, fetchTags } from 'store/thunks';
+import { fetchComments, fetchPosts, fetchTags } from 'store/thunks';
 import { ReturnComponentType } from 'types';
 
 export const Home = (): ReturnComponentType => {
@@ -22,12 +24,16 @@ export const Home = (): ReturnComponentType => {
 
     const posts = useAppSelector(selectPosts);
     const postStatus = useAppSelector(selectPostStatus);
+    const comments = useAppSelector(state => state.comments.items);
+    const commentsStatus = useAppSelector(state => state.comments.status);
+    const isCommentsLoading = commentsStatus === REQUEST_STATUS.LOADING;
     const isPostsLoading = postStatus === REQUEST_STATUS.LOADING;
     const authUserId = useAppSelector(selectAuthUserId);
 
     useEffect(() => {
         dispatch(fetchPosts());
         dispatch(fetchTags());
+        dispatch(fetchComments());
     }, [sortBy, tag]);
 
     const changeSort = (): void => {
@@ -74,31 +80,12 @@ export const Home = (): ReturnComponentType => {
             </Tabs>
             <Grid container spacing={4}>
                 <Grid xs={8} item>
+                    {tag && <div className={classes.tag}>{`# ${tag}`}</div>}
                     {isPostsLoading ? <PostSkeleton itemsCount={3} /> : mappedPosts}
                 </Grid>
                 <Grid xs={4} item>
                     <TagsBlock />
-                    <CommentsBlock
-                        items={[
-                            {
-                                user: {
-                                    fullName: 'Вася Пупкин',
-                                    avatarUrl:
-                                        'https://mui.com/static/images/avatar/1.jpg',
-                                },
-                                text: 'Это тестовый комментарий',
-                            },
-                            {
-                                user: {
-                                    fullName: 'Иван Иванов',
-                                    avatarUrl:
-                                        'https://mui.com/static/images/avatar/2.jpg',
-                                },
-                                text: 'When displaying three lines or more, the avatar is not aligned at the top. You should set the prop to align the avatar at the top',
-                            },
-                        ]}
-                        isLoading={false}
-                    />
+                    <CommentsBlock items={comments} isLoading={isCommentsLoading} />
                 </Grid>
             </Grid>
         </>
