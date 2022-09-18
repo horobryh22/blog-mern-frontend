@@ -22,39 +22,53 @@ export const CommentsBlock = ({
     return (
         <SideBlock title="Comments">
             <List>
-                {(isLoading ? [...Array(5)] : items).map((comment: CommentType) => (
-                    <React.Fragment key={comment?._id}>
-                        <ListItem alignItems="flex-start">
-                            <ListItemAvatar>
+                {(isLoading ? [...Array(5)] : items).map(
+                    (comment: CommentType, index) => (
+                        <React.Fragment key={comment?._id ? comment?._id : index}>
+                            <ListItem alignItems="flex-start">
+                                <ListItemAvatar>
+                                    {isLoading ? (
+                                        <Skeleton
+                                            variant="circular"
+                                            width={40}
+                                            height={40}
+                                        />
+                                    ) : (
+                                        <Avatar
+                                            alt={comment?.user?.fullName}
+                                            src="https://mui.com/static/images/avatar/1.jpg"
+                                        />
+                                    )}
+                                </ListItemAvatar>
                                 {isLoading ? (
-                                    <Skeleton variant="circular" width={40} height={40} />
+                                    <div
+                                        style={{
+                                            display: 'flex',
+                                            flexDirection: 'column',
+                                        }}
+                                    >
+                                        <Skeleton
+                                            variant="text"
+                                            height={25}
+                                            width={120}
+                                        />
+                                        <Skeleton
+                                            variant="text"
+                                            height={18}
+                                            width={230}
+                                        />
+                                    </div>
                                 ) : (
-                                    <Avatar
-                                        alt={comment?.user?.fullName}
-                                        src="https://mui.com/static/images/avatar/1.jpg"
+                                    <ListItemText
+                                        primary={comment?.user?.fullName}
+                                        secondary={comment?.text}
                                     />
                                 )}
-                            </ListItemAvatar>
-                            {isLoading ? (
-                                <div
-                                    style={{
-                                        display: 'flex',
-                                        flexDirection: 'column',
-                                    }}
-                                >
-                                    <Skeleton variant="text" height={25} width={120} />
-                                    <Skeleton variant="text" height={18} width={230} />
-                                </div>
-                            ) : (
-                                <ListItemText
-                                    primary={comment?.user?.fullName}
-                                    secondary={comment?.text}
-                                />
-                            )}
-                        </ListItem>
-                        <Divider variant="inset" component="li" />
-                    </React.Fragment>
-                ))}
+                            </ListItem>
+                            <Divider variant="inset" component="li" />
+                        </React.Fragment>
+                    ),
+                )}
             </List>
             {children}
         </SideBlock>

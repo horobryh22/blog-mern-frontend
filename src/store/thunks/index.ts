@@ -10,3 +10,5 @@ export { register } from './auth/register';
 export { me } from './auth/me';
 export { initializeApp } from './app/initializeApp';
 export { fetchComments } from './comments/fetchComments';
+export { fetchSelectedComments } from './comments/fetchSelectedComments';
+export { createComment } from './comments/createComment';

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ChangeEvent, useState } from 'react';
 
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
@@ -6,15 +6,33 @@ import TextField from '@mui/material/TextField';
 
 import styles from './AddComment.module.scss';
 
-import { instance } from 'api/config';
+import { useAppDispatch } from 'hooks';
+import { setAppError } from 'store/slices';
+import { createComment } from 'store/thunks';
 import { ReturnComponentType } from 'types';
 
-export const Index = (): ReturnComponentType => {
+export type IndexType = {
+    postId: string;
+};
+
+export const Index = ({ postId }: IndexType): ReturnComponentType => {
+    const dispatch = useAppDispatch();
+
+    const [text, setText] = useState('');
+
+    const handleChange = (e: ChangeEvent<HTMLInputElement>): void => {
+        setText(e.currentTarget.value);
+    };
+
     const handleClick = (): void => {
-        instance.post('/comments', {
-            text: 'First comment',
-            post: '6325fd64c0aa25fd8c5b7d94',
-        });
+        if (postId && text.length >= 3) {
+            dispatch(createComment({ postId, text }));
+            setText('');
+
+            return;
+        }
+
+        dispatch(setAppError('Please enter min 3 symbols'));
     };
 
     return (
@@ -30,6 +48,8 @@ export const Index = (): ReturnComponentType => {
                     maxRows={10}
                     multiline
                     fullWidth
+                    value={text}
+                    onChange={handleChange}
                 />
                 <Button variant="contained" onClick={handleClick}>
                     Send

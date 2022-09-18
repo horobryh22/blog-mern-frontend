@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 import { REQUEST_STATUS } from 'enums';
-import { fetchComments } from 'store/thunks';
+import { fetchComments, fetchSelectedComments } from 'store/thunks';
 import { CommentsInitialStateType } from 'store/types';
 
 const initialState: CommentsInitialStateType = {
@@ -22,11 +22,22 @@ export const commentsSlice = createSlice({
         });
         builder.addCase(fetchComments.pending, state => {
             state.items = [];
-            state.selectedItems = [];
             state.status = REQUEST_STATUS.LOADING;
         });
         builder.addCase(fetchComments.rejected, state => {
             state.items = [];
+            state.status = REQUEST_STATUS.ERROR;
+        });
+        // get selected comments
+        builder.addCase(fetchSelectedComments.fulfilled, (state, action) => {
+            state.selectedItems = action.payload;
+            state.status = REQUEST_STATUS.SUCCESS;
+        });
+        builder.addCase(fetchSelectedComments.pending, state => {
+            state.selectedItems = [];
+            state.status = REQUEST_STATUS.LOADING;
+        });
+        builder.addCase(fetchSelectedComments.rejected, state => {
             state.selectedItems = [];
             state.status = REQUEST_STATUS.ERROR;
         });
