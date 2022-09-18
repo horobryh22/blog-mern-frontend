@@ -4,7 +4,7 @@ import { AxiosError } from 'axios';
 import { commentsAPI } from 'api';
 import { REQUEST_STATUS } from 'enums';
 import { setAppStatus } from 'store/slices';
-import { fetchSelectedComments } from 'store/thunks/comments/fetchSelectedComments';
+import { fetchSelectedComments } from 'store/thunks';
 
 export const createComment = createAsyncThunk<
     void,

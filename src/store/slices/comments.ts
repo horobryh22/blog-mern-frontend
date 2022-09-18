@@ -1,7 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 import { REQUEST_STATUS } from 'enums';
-import { fetchComments, fetchSelectedComments } from 'store/thunks';
+import {
+    fetchComments,
+    fetchSelectedComments,
+    removeComment,
+    updateComment,
+} from 'store/thunks';
 import { CommentsInitialStateType } from 'store/types';
 
 const initialState: CommentsInitialStateType = {
@@ -39,6 +44,28 @@ export const commentsSlice = createSlice({
         });
         builder.addCase(fetchSelectedComments.rejected, state => {
             state.selectedItems = [];
+            state.status = REQUEST_STATUS.ERROR;
+        });
+        // remove comment
+        builder.addCase(removeComment.fulfilled, (state, action) => {
+            state.selectedItems = state.selectedItems.filter(
+                comment => comment._id !== action.payload,
+            );
+            state.status = REQUEST_STATUS.SUCCESS;
+        });
+        builder.addCase(removeComment.rejected, state => {
+            state.status = REQUEST_STATUS.ERROR;
+        });
+        // update comment
+        builder.addCase(updateComment.fulfilled, (state, action) => {
+            state.selectedItems = state.selectedItems.map(comment =>
+                comment._id === action.payload.commentId
+                    ? { ...comment, text: action.payload.text }
+                    : comment,
+            );
+            state.status = REQUEST_STATUS.SUCCESS;
+        });
+        builder.addCase(updateComment.rejected, state => {
             state.status = REQUEST_STATUS.ERROR;
         });
     },

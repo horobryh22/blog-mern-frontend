@@ -8,3 +8,4 @@ export { CommentsBlock } from './commentsBlock/CommentsBlock';
 export { TagsBlock } from './tagsBlock/TagsBlock';
 export { SimpleBackdrop } from './simpleBackdrop/SimpleBackdrop';
 export { SnackBar } from './snackbar/SnackBar';
+export { EditableField } from './editableField/EditableField';

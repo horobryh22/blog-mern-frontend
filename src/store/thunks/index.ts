@@ -12,3 +12,5 @@ export { initializeApp } from './app/initializeApp';
 export { fetchComments } from './comments/fetchComments';
 export { fetchSelectedComments } from './comments/fetchSelectedComments';
 export { createComment } from './comments/createComment';
+export { removeComment } from './comments/removeComment';
+export { updateComment } from './comments/updateComment';

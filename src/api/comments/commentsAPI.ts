@@ -14,7 +14,10 @@ export const commentsAPI = {
             post: postId,
         });
     },
-    delete: (commentId: string) => {
+    update: (text: string, commentId: string) => {
+        return instance.patch(`/comments/${commentId}`, { text });
+    },
+    remove: (commentId: string) => {
         return instance.delete(`/comments/${commentId}`);
     },
 };

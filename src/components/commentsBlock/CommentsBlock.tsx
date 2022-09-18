@@ -5,13 +5,13 @@ import Divider from '@mui/material/Divider';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
-import ListItemText from '@mui/material/ListItemText';
 import Skeleton from '@mui/material/Skeleton';
+import { useParams } from 'react-router-dom';
 
 import { CommentsBlockType } from './types';
 
 import { CommentType } from 'api/types';
-import { SideBlock } from 'components';
+import { EditableField, SideBlock } from 'components';
 import { ReturnComponentType } from 'types';
 
 export const CommentsBlock = ({
@@ -19,13 +19,18 @@ export const CommentsBlock = ({
     children,
     isLoading = true,
 }: CommentsBlockType): ReturnComponentType => {
+    const { id } = useParams();
+
     return (
         <SideBlock title="Comments">
             <List>
-                {(isLoading ? [...Array(5)] : items).map(
+                {(isLoading ? [...Array(3)] : items).map(
                     (comment: CommentType, index) => (
                         <React.Fragment key={comment?._id ? comment?._id : index}>
-                            <ListItem alignItems="flex-start">
+                            <ListItem
+                                alignItems="flex-start"
+                                style={id ? { minHeight: 80 } : {}}
+                            >
                                 <ListItemAvatar>
                                     {isLoading ? (
                                         <Skeleton
@@ -59,9 +64,12 @@ export const CommentsBlock = ({
                                         />
                                     </div>
                                 ) : (
-                                    <ListItemText
-                                        primary={comment?.user?.fullName}
-                                        secondary={comment?.text}
+                                    <EditableField
+                                        text={comment?.text}
+                                        commentId={comment?._id}
+                                        fullName={comment?.user?.fullName}
+                                        userId={comment?.user?._id}
+                                        createdAt={comment?.createdAt}
                                     />
                                 )}
                             </ListItem>
