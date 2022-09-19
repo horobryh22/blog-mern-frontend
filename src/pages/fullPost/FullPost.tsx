@@ -3,10 +3,16 @@ import React, { useEffect } from 'react';
 import ReactMarkdown from 'react-markdown';
 import { useParams } from 'react-router-dom';
 
-import { CommentsBlock, Index, Post, PostSkeleton } from 'components';
+import { CommentsBlock, AddComment, Post, PostSkeleton } from 'components';
 import { REQUEST_STATUS } from 'enums';
 import { useAppDispatch, useAppSelector } from 'hooks';
-import { selectIsUserLogged, selectPost, selectPostStatus } from 'store/selectors';
+import {
+    selectCommentsStatus,
+    selectCurrentPostComments,
+    selectIsUserLogged,
+    selectPost,
+    selectPostStatus,
+} from 'store/selectors';
 import { fetchSelectedComments, fetchOnePost } from 'store/thunks';
 import { ReturnComponentType } from 'types';
 
@@ -18,8 +24,8 @@ export const FullPost = (): ReturnComponentType => {
     const isUserLogged = useAppSelector(selectIsUserLogged);
     const post = useAppSelector(selectPost);
     const postStatus = useAppSelector(selectPostStatus);
-    const comments = useAppSelector(state => state.comments.selectedItems);
-    const commentsStatus = useAppSelector(state => state.comments.status);
+    const comments = useAppSelector(selectCurrentPostComments);
+    const commentsStatus = useAppSelector(selectCommentsStatus);
 
     useEffect(() => {
         if (id) {
@@ -52,7 +58,7 @@ export const FullPost = (): ReturnComponentType => {
                 items={comments}
                 isLoading={commentsStatus === REQUEST_STATUS.LOADING}
             >
-                {isUserLogged && <Index postId={id || ''} />}
+                {isUserLogged && <AddComment postId={id || ''} />}
             </CommentsBlock>
         </>
     );

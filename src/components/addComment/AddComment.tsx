@@ -5,23 +5,21 @@ import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 
 import styles from './AddComment.module.scss';
+import { AddCommentType } from './types';
 
 import defaultAvatar from 'assets/images/defaultAvatar.jpg';
 import { useAppDispatch, useAppSelector } from 'hooks';
+import { selectUserAvatar } from 'store/selectors';
 import { setAppError } from 'store/slices';
 import { createComment } from 'store/thunks';
 import { ReturnComponentType } from 'types';
 
-export type IndexType = {
-    postId: string;
-};
-
-export const Index = ({ postId }: IndexType): ReturnComponentType => {
+export const AddComment = ({ postId }: AddCommentType): ReturnComponentType => {
     const dispatch = useAppDispatch();
 
     const [text, setText] = useState('');
 
-    const userAvatar = useAppSelector(state => state.auth.data.avatarUrl);
+    const userAvatar = useAppSelector(selectUserAvatar);
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>): void => {
         setText(e.currentTarget.value);

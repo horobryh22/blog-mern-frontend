@@ -131,6 +131,7 @@
         "props": false
       }
     ],
+    "react/jsx-no-useless-fragment": [2, { "allowExpressions": true }],
     "react/display-name": "off",
     "react/react-in-jsx-scope": "off",
     "react/require-default-props": "off",

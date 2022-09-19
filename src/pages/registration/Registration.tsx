@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useRef, useState } from 'react';
+import React, { useState } from 'react';
 
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
@@ -13,17 +13,17 @@ import classes from './Registration.module.scss';
 import { FormValuesType } from 'api/types';
 import camera from 'assets/images/camera.svg';
 import defaultAvatar from 'assets/images/defaultAvatar.jpg';
+import { InputFileType } from 'components';
 import { useAppDispatch, useAppSelector } from 'hooks';
 import { selectIsUserLogged } from 'store/selectors';
-import { setAppError } from 'store/slices';
-import { register, uploadImage } from 'store/thunks';
+import { register } from 'store/thunks';
 import { ReturnComponentType } from 'types';
+import { setValueToLocalStorage } from 'utils';
 
 export const Registration = (): ReturnComponentType => {
     const dispatch = useAppDispatch();
 
     const [avatarUrl, setAvatarUrl] = useState('');
-    const inputFileRef = useRef<HTMLInputElement | null>(null);
 
     const isUserLogged = useAppSelector(selectIsUserLogged);
 
@@ -40,22 +40,6 @@ export const Registration = (): ReturnComponentType => {
         mode: 'onChange',
     });
 
-    const handleChangeFile = async (e: ChangeEvent<HTMLInputElement>): Promise<void> => {
-        try {
-            if (e.target.files) {
-                const formData = new FormData();
-                const file = e.target.files[0];
-
-                formData.append('image', file);
-                const { payload } = await dispatch(uploadImage(formData));
-
-                if (payload) setAvatarUrl(payload);
-            }
-        } catch (e) {
-            dispatch(setAppError('File was not uploaded'));
-        }
-    };
-
     const onSubmit = async (values: FormValuesType): Promise<void> => {
         const { email, password, fullName } = values;
 
@@ -68,13 +52,7 @@ export const Registration = (): ReturnComponentType => {
             }),
         );
 
-        if (!data.payload) return;
-
-        if (typeof data.payload === 'string') return;
-
-        if ('token' in data.payload) {
-            window.localStorage.setItem('token', data.payload.token!);
-        }
+        if (data.payload) setValueToLocalStorage(data.payload);
     };
 
     if (isUserLogged) return <Navigate to="/" />;
@@ -85,19 +63,9 @@ export const Registration = (): ReturnComponentType => {
                 Create account
             </Typography>
             <div className={classes.avatar}>
-                <button
-                    type="button"
-                    className={classes.avatarIcon}
-                    onClick={() => inputFileRef.current?.click()}
-                >
+                <InputFileType setImageUrl={setAvatarUrl} className={classes.avatarIcon}>
                     <img src={camera} alt="camera" />
-                </button>
-                <input
-                    ref={inputFileRef}
-                    type="file"
-                    onChange={handleChangeFile}
-                    hidden
-                />
+                </InputFileType>
                 <Avatar
                     src={avatarUrl ? `http://localhost:4444${avatarUrl}` : defaultAvatar}
                     sx={{ width: 100, height: 100 }}

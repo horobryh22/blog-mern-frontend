@@ -14,6 +14,7 @@ import { useAppDispatch, useAppSelector } from 'hooks';
 import { selectIsUserLogged } from 'store/selectors';
 import { login } from 'store/thunks';
 import { ReturnComponentType } from 'types';
+import { setValueToLocalStorage } from 'utils';
 
 export const Login = (): ReturnComponentType => {
     const dispatch = useAppDispatch();
@@ -38,13 +39,7 @@ export const Login = (): ReturnComponentType => {
     }: Omit<FormValuesType, 'fullName'>): Promise<void> => {
         const data = await dispatch(login({ email, password }));
 
-        if (!data.payload) return;
-
-        if (typeof data.payload === 'string') return;
-
-        if ('token' in data.payload) {
-            window.localStorage.setItem('token', data.payload.token!);
-        }
+        if (data.payload) setValueToLocalStorage(data.payload);
     };
 
     if (isUserLogged) return <Navigate to="/" />;

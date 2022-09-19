@@ -10,7 +10,13 @@ import classes from './Home.module.scss';
 import { CommentsBlock, Post, PostSkeleton, TagsBlock } from 'components';
 import { REQUEST_STATUS } from 'enums';
 import { useAppDispatch, useAppSelector } from 'hooks';
-import { selectAuthUserId, selectPosts, selectPostStatus } from 'store/selectors';
+import {
+    selectAuthUserId,
+    selectCommentsStatus,
+    selectLastComments,
+    selectPosts,
+    selectPostStatus,
+} from 'store/selectors';
 import { changeSortBy } from 'store/slices';
 import { fetchComments, fetchPosts, fetchTags } from 'store/thunks';
 import { ReturnComponentType } from 'types';
@@ -24,8 +30,8 @@ export const Home = (): ReturnComponentType => {
 
     const posts = useAppSelector(selectPosts);
     const postStatus = useAppSelector(selectPostStatus);
-    const comments = useAppSelector(state => state.comments.items);
-    const commentsStatus = useAppSelector(state => state.comments.status);
+    const comments = useAppSelector(selectLastComments);
+    const commentsStatus = useAppSelector(selectCommentsStatus);
     const isCommentsLoading = commentsStatus === REQUEST_STATUS.LOADING;
     const isPostsLoading = postStatus === REQUEST_STATUS.LOADING;
     const authUserId = useAppSelector(selectAuthUserId);

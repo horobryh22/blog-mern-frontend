@@ -1,19 +1,19 @@
-import React, { ChangeEvent, useEffect, useRef, useState } from 'react';
+import React, { ChangeEvent, useEffect, useState } from 'react';
 
 import { Paper, TextField } from '@mui/material';
 import Button from '@mui/material/Button';
-import { Navigate, useNavigate, useParams } from 'react-router-dom';
+import { Navigate, NavLink, useNavigate, useParams } from 'react-router-dom';
 import SimpleMDE from 'react-simplemde-editor';
 
-import styles from './AddPost.module.scss';
-
 import 'easymde/dist/easymde.min.css';
-import { PostSkeleton } from 'components';
+import classes from './AddPost.module.scss';
+
+import { InputFileType, PostSkeleton } from 'components';
 import { REQUEST_STATUS } from 'enums';
 import { useAppDispatch, useAppSelector } from 'hooks';
 import { selectIsUserLogged, selectPost, selectPostStatus } from 'store/selectors';
 import { setAppError } from 'store/slices';
-import { createPost, fetchOnePost, updatePost, uploadImage } from 'store/thunks';
+import { createPost, fetchOnePost, updatePost } from 'store/thunks';
 import { ReturnComponentType } from 'types';
 
 export const AddPost = (): ReturnComponentType => {
@@ -22,8 +22,6 @@ export const AddPost = (): ReturnComponentType => {
     const { id } = useParams();
 
     const navigate = useNavigate();
-
-    const inputFileRef = useRef<HTMLInputElement | null>(null);
 
     const isEditing = Boolean(id);
     const isUserLogged = useAppSelector(selectIsUserLogged);
@@ -57,22 +55,6 @@ export const AddPost = (): ReturnComponentType => {
         }
     }, [id, post]);
 
-    const handleChangeFile = async (e: ChangeEvent<HTMLInputElement>): Promise<void> => {
-        try {
-            if (e.target.files) {
-                const formData = new FormData();
-                const file = e.target.files[0];
-
-                formData.append('image', file);
-                const { payload } = await dispatch(uploadImage(formData));
-
-                if (payload) setImageUrl(payload);
-            }
-        } catch (e) {
-            dispatch(setAppError('File was not uploaded'));
-        }
-    };
-
     const onClickRemoveImage = (): void => {
         setImageUrl('');
     };
@@ -85,7 +67,7 @@ export const AddPost = (): ReturnComponentType => {
         setTags(e.currentTarget.value);
     };
 
-    const onChange = React.useCallback((value: string) => {
+    const handleTextChange = React.useCallback((value: string) => {
         setText(value);
     }, []);
 
@@ -147,14 +129,9 @@ export const AddPost = (): ReturnComponentType => {
 
     return (
         <Paper style={{ padding: 30 }}>
-            <Button
-                onClick={() => inputFileRef.current?.click()}
-                variant="outlined"
-                size="large"
-            >
+            <InputFileType setImageUrl={setImageUrl} className={classes.uploadButton}>
                 Upload preview
-            </Button>
-            <input ref={inputFileRef} type="file" onChange={handleChangeFile} hidden />
+            </InputFileType>
             {imageUrl && (
                 <>
                     <Button
@@ -165,7 +142,7 @@ export const AddPost = (): ReturnComponentType => {
                         Delete
                     </Button>
                     <img
-                        className={styles.image}
+                        className={classes.image}
                         src={`http://localhost:4444${imageUrl}`}
                         alt="Uploaded"
                     />
@@ -174,7 +151,7 @@ export const AddPost = (): ReturnComponentType => {
             <br />
             <br />
             <TextField
-                classes={{ root: styles.title }}
+                classes={{ root: classes.title }}
                 variant="standard"
                 placeholder="Header of article"
                 fullWidth
@@ -182,7 +159,7 @@ export const AddPost = (): ReturnComponentType => {
                 onChange={handleTitleChange}
             />
             <TextField
-                classes={{ root: styles.tags }}
+                classes={{ root: classes.tags }}
                 variant="standard"
                 placeholder="Tags"
                 fullWidth
@@ -190,12 +167,12 @@ export const AddPost = (): ReturnComponentType => {
                 onChange={handleTagsChange}
             />
             <SimpleMDE
-                className={styles.editor}
+                className={classes.editor}
                 value={text}
-                onChange={onChange}
+                onChange={handleTextChange}
                 options={options}
             />
-            <div className={styles.buttons}>
+            <div className={classes.buttons}>
                 <Button
                     size="large"
                     variant="contained"
@@ -203,9 +180,9 @@ export const AddPost = (): ReturnComponentType => {
                 >
                     {isEditing ? 'Save' : 'Publish'}
                 </Button>
-                <a href="/">
+                <NavLink to="/">
                     <Button size="large">Cancel</Button>
-                </a>
+                </NavLink>
             </div>
         </Paper>
     );

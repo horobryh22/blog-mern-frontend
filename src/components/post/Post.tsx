@@ -16,6 +16,7 @@ import { useAppDispatch } from 'hooks';
 import { changeSelectedTag } from 'store/slices';
 import { deletePost } from 'store/thunks';
 import { ReturnComponentType } from 'types';
+import { formatDate } from 'utils';
 
 export const Post = ({
     _id,
@@ -31,9 +32,6 @@ export const Post = ({
     isEditable,
 }: PostPropsType): ReturnComponentType => {
     const dispatch = useAppDispatch();
-
-    const date = new Date(createdAt);
-    const formattedData = date.toLocaleString();
 
     const onClickRemove = (): void => {
         dispatch(deletePost(_id));
@@ -65,7 +63,7 @@ export const Post = ({
                 />
             )}
             <div className={styles.wrapper}>
-                <UserInfo {...user} additionalText={formattedData} />
+                <UserInfo {...user} additionalText={formatDate(createdAt)} />
                 <div className={styles.indention}>
                     <h2
                         className={clsx(styles.title, { [styles.titleFull]: isFullPost })}

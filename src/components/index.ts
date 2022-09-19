@@ -1,7 +1,7 @@
 export { PostSkeleton } from './post/skeleton/Skeleton';
 export { Post } from './post/Post';
 export { Header } from './header/Header';
-export { Index } from './addComment/AddComment';
+export { AddComment } from './addComment/AddComment';
 export { UserInfo } from './userInfo/UserInfo';
 export { SideBlock } from './sideBlock/SideBlock';
 export { CommentsBlock } from './commentsBlock/CommentsBlock';
@@ -9,3 +9,5 @@ export { TagsBlock } from './tagsBlock/TagsBlock';
 export { SimpleBackdrop } from './simpleBackdrop/SimpleBackdrop';
 export { SnackBar } from './snackbar/SnackBar';
 export { EditableField } from './editableField/EditableField';
+export { SkeletonComment } from './commentsBlock/skeletonComment/SkeletonComment';
+export { InputFileType } from './inputFileType/InputFileType';

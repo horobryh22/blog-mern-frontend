@@ -42,6 +42,5 @@ export const PostSkeleton = ({ itemsCount }: PostSkeletonType): ReturnComponentT
         );
     });
 
-    // eslint-disable-next-line react/jsx-no-useless-fragment
     return <>{mappedItems}</>;
 };

@@ -12,13 +12,13 @@ import { CommentsBlockType } from './types';
 
 import { CommentType } from 'api/types';
 import defaultAvatar from 'assets/images/defaultAvatar.jpg';
-import { EditableField, SideBlock } from 'components';
+import { EditableField, SideBlock, SkeletonComment } from 'components';
 import { ReturnComponentType } from 'types';
 
 export const CommentsBlock = ({
     items,
     children,
-    isLoading = true,
+    isLoading,
 }: CommentsBlockType): ReturnComponentType => {
     const { id } = useParams();
 
@@ -49,23 +49,7 @@ export const CommentsBlock = ({
                                     )}
                                 </ListItemAvatar>
                                 {isLoading ? (
-                                    <div
-                                        style={{
-                                            display: 'flex',
-                                            flexDirection: 'column',
-                                        }}
-                                    >
-                                        <Skeleton
-                                            variant="text"
-                                            height={25}
-                                            width={120}
-                                        />
-                                        <Skeleton
-                                            variant="text"
-                                            height={18}
-                                            width={230}
-                                        />
-                                    </div>
+                                    <SkeletonComment />
                                 ) : (
                                     <EditableField
                                         text={comment?.text}
