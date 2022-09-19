@@ -1,17 +1,13 @@
+import { UserDataType } from 'api/types/auth/UserDataType';
+
 export type PostType = {
     _id: string;
     title: string;
     text: string;
     tags: string[];
     viewsCount: number;
-    user: {
-        _id: string;
-        fullName: string;
-        email: string;
-        passwordHash: string;
-        createdAt: string;
-        updatedAt: string;
-    };
+    commentsCount: number;
+    user: UserDataType;
     imageUrl: string;
     createdAt: string;
     updatedAt: string;

@@ -20,7 +20,7 @@ export const postsAPI = {
         return instance.post<PostType>(`/posts`, postData);
     },
     updatePost: (postData: PostDataType, id: string) => {
-        return instance.patch<PostType>(`/posdts/${id}`, postData);
+        return instance.patch<PostType>(`/posts/${id}`, postData);
     },
     uploadImage: (formData: FormData) => {
         return instance.post<{ url: string }>('/upload', formData);

@@ -7,7 +7,7 @@ import { setAppStatus } from 'store/slices';
 import { fetchSelectedComments } from 'store/thunks';
 
 export const createComment = createAsyncThunk<
-    void,
+    string,
     { postId: string; text: string },
     { rejectValue: string }
 >('comments/createComment', async ({ postId, text }, { rejectWithValue, dispatch }) => {
@@ -17,6 +17,8 @@ export const createComment = createAsyncThunk<
         await commentsAPI.create(text, postId);
 
         await dispatch(fetchSelectedComments(postId));
+
+        return postId;
     } catch (e) {
         const err = e as AxiosError;
 

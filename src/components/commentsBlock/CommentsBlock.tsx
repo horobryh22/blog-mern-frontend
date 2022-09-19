@@ -11,6 +11,7 @@ import { useParams } from 'react-router-dom';
 import { CommentsBlockType } from './types';
 
 import { CommentType } from 'api/types';
+import defaultAvatar from 'assets/images/defaultAvatar.jpg';
 import { EditableField, SideBlock } from 'components';
 import { ReturnComponentType } from 'types';
 
@@ -41,7 +42,9 @@ export const CommentsBlock = ({
                                     ) : (
                                         <Avatar
                                             alt={comment?.user?.fullName}
-                                            src="https://mui.com/static/images/avatar/1.jpg"
+                                            src={
+                                                comment?.user?.avatarUrl || defaultAvatar
+                                            }
                                         />
                                     )}
                                 </ListItemAvatar>

@@ -51,16 +51,16 @@ export const Home = (): ReturnComponentType => {
     const mappedPosts = posts.length ? (
         posts.map(post => (
             <Post
-                key={post._id}
-                _id={post._id}
-                title={post.title}
-                imageUrl={post.imageUrl ? `http://localhost:4444${post.imageUrl}` : ''}
-                user={post.user}
-                createdAt={post.createdAt}
-                viewsCount={post.viewsCount}
-                commentsCount={3}
-                tags={post.tags}
-                isEditable={post.user._id === authUserId}
+                key={post?._id}
+                _id={post?._id}
+                title={post?.title}
+                imageUrl={post?.imageUrl ? `http://localhost:4444${post.imageUrl}` : ''}
+                user={post?.user}
+                createdAt={post?.createdAt}
+                viewsCount={post?.viewsCount}
+                commentsCount={post?.commentsCount}
+                tags={post?.tags}
+                isEditable={post?.user?._id === authUserId}
                 isFullPost={false}
             />
         ))

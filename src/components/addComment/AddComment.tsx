@@ -6,7 +6,8 @@ import TextField from '@mui/material/TextField';
 
 import styles from './AddComment.module.scss';
 
-import { useAppDispatch } from 'hooks';
+import defaultAvatar from 'assets/images/defaultAvatar.jpg';
+import { useAppDispatch, useAppSelector } from 'hooks';
 import { setAppError } from 'store/slices';
 import { createComment } from 'store/thunks';
 import { ReturnComponentType } from 'types';
@@ -19,6 +20,8 @@ export const Index = ({ postId }: IndexType): ReturnComponentType => {
     const dispatch = useAppDispatch();
 
     const [text, setText] = useState('');
+
+    const userAvatar = useAppSelector(state => state.auth.data.avatarUrl);
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>): void => {
         setText(e.currentTarget.value);
@@ -37,10 +40,7 @@ export const Index = ({ postId }: IndexType): ReturnComponentType => {
 
     return (
         <div className={styles.root}>
-            <Avatar
-                classes={{ root: styles.avatar }}
-                src="https://mui.com/static/images/avatar/5.jpg"
-            />
+            <Avatar classes={{ root: styles.avatar }} src={userAvatar || defaultAvatar} />
             <div className={styles.form}>
                 <TextField
                     label="Write a comment"

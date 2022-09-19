@@ -65,11 +65,7 @@ export const Post = ({
                 />
             )}
             <div className={styles.wrapper}>
-                <UserInfo
-                    avatarUrl="https://mui.com/static/images/avatar/1.jpg"
-                    {...user}
-                    additionalText={formattedData}
-                />
+                <UserInfo {...user} additionalText={formattedData} />
                 <div className={styles.indention}>
                     <h2
                         className={clsx(styles.title, { [styles.titleFull]: isFullPost })}

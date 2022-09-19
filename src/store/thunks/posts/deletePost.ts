@@ -4,23 +4,29 @@ import { AxiosError } from 'axios';
 import { postsAPI } from 'api';
 import { REQUEST_STATUS } from 'enums';
 import { setAppStatus } from 'store/slices';
+import { AppDispatch } from 'store/store';
+import { fetchComments, fetchTags } from 'store/thunks';
 
-export const deletePost = createAsyncThunk<string, string, { rejectValue: string }>(
-    'posts/deletePost',
-    async (id, { rejectWithValue, dispatch }) => {
-        try {
-            dispatch(setAppStatus(REQUEST_STATUS.LOADING));
-            await postsAPI.deletePost(id);
+export const deletePost = createAsyncThunk<
+    string,
+    string,
+    { rejectValue: string; dispatch: AppDispatch }
+>('posts/deletePost', async (id, { rejectWithValue, dispatch }) => {
+    try {
+        dispatch(setAppStatus(REQUEST_STATUS.LOADING));
+        await postsAPI.deletePost(id);
 
-            return id;
-        } catch (e) {
-            const err = e as AxiosError;
+        await dispatch(fetchTags());
+        await dispatch(fetchComments());
 
-            dispatch(setAppStatus(REQUEST_STATUS.ERROR));
+        return id;
+    } catch (e) {
+        const err = e as AxiosError;
 
-            return rejectWithValue(err.message);
-        } finally {
-            dispatch(setAppStatus(REQUEST_STATUS.SUCCESS));
-        }
-    },
-);
+        dispatch(setAppStatus(REQUEST_STATUS.ERROR));
+
+        return rejectWithValue(err.message);
+    } finally {
+        dispatch(setAppStatus(REQUEST_STATUS.SUCCESS));
+    }
+});

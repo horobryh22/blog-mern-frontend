@@ -2,7 +2,13 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { PostType } from 'api/types';
 import { REQUEST_STATUS } from 'enums';
-import { fetchOnePost, fetchPosts, fetchTags, deletePost } from 'store/thunks';
+import {
+    fetchOnePost,
+    fetchPosts,
+    fetchTags,
+    deletePost,
+    createComment,
+} from 'store/thunks';
 import { PostsInitialStateType } from 'store/types';
 
 const initialState: PostsInitialStateType = {
@@ -80,6 +86,14 @@ export const postsSlice = createSlice({
             state.posts.status = REQUEST_STATUS.SUCCESS;
         });
         builder.addCase(deletePost.rejected, state => {
+            state.posts.status = REQUEST_STATUS.ERROR;
+        });
+        // increase commentsCount
+        builder.addCase(createComment.fulfilled, state => {
+            state.posts.currentItem.commentsCount += 1;
+            state.posts.status = REQUEST_STATUS.SUCCESS;
+        });
+        builder.addCase(createComment.rejected, state => {
             state.posts.status = REQUEST_STATUS.ERROR;
         });
     },

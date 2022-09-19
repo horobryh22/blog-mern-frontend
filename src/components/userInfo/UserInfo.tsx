@@ -3,6 +3,7 @@ import React from 'react';
 import { UserInfoType } from './types';
 import styles from './UserInfo.module.scss';
 
+import defaultAvatar from 'assets/images/defaultAvatar.jpg';
 import { ReturnComponentType } from 'types';
 
 export const UserInfo = ({
@@ -14,7 +15,7 @@ export const UserInfo = ({
         <div className={styles.root}>
             <img
                 className={styles.avatar}
-                src={avatarUrl || '/noavatar.png'}
+                src={avatarUrl || defaultAvatar}
                 alt={fullName}
             />
             <div className={styles.userDetails}>

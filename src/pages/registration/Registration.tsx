@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ChangeEvent, useRef, useState } from 'react';
 
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
@@ -8,16 +8,22 @@ import Typography from '@mui/material/Typography';
 import { useForm } from 'react-hook-form';
 import { Navigate } from 'react-router-dom';
 
-import styles from './Registration.module.scss';
+import classes from './Registration.module.scss';
 
 import { FormValuesType } from 'api/types';
+import camera from 'assets/images/camera.svg';
+import defaultAvatar from 'assets/images/defaultAvatar.jpg';
 import { useAppDispatch, useAppSelector } from 'hooks';
 import { selectIsUserLogged } from 'store/selectors';
-import { register } from 'store/thunks';
+import { setAppError } from 'store/slices';
+import { register, uploadImage } from 'store/thunks';
 import { ReturnComponentType } from 'types';
 
 export const Registration = (): ReturnComponentType => {
     const dispatch = useAppDispatch();
+
+    const [avatarUrl, setAvatarUrl] = useState('');
+    const inputFileRef = useRef<HTMLInputElement | null>(null);
 
     const isUserLogged = useAppSelector(selectIsUserLogged);
 
@@ -27,25 +33,76 @@ export const Registration = (): ReturnComponentType => {
         formState: { errors },
     } = useForm<FormValuesType>({
         defaultValues: {
+            fullName: '',
             email: '',
             password: '',
         },
         mode: 'onChange',
     });
 
-    const onSubmit = (values: FormValuesType): void => {
-        dispatch(register(values));
+    const handleChangeFile = async (e: ChangeEvent<HTMLInputElement>): Promise<void> => {
+        try {
+            if (e.target.files) {
+                const formData = new FormData();
+                const file = e.target.files[0];
+
+                formData.append('image', file);
+                const { payload } = await dispatch(uploadImage(formData));
+
+                if (payload) setAvatarUrl(payload);
+            }
+        } catch (e) {
+            dispatch(setAppError('File was not uploaded'));
+        }
+    };
+
+    const onSubmit = async (values: FormValuesType): Promise<void> => {
+        const { email, password, fullName } = values;
+
+        const data = await dispatch(
+            register({
+                email,
+                password,
+                fullName,
+                avatarUrl: avatarUrl ? `http://localhost:4444${avatarUrl}` : '',
+            }),
+        );
+
+        if (!data.payload) return;
+
+        if (typeof data.payload === 'string') return;
+
+        if ('token' in data.payload) {
+            window.localStorage.setItem('token', data.payload.token!);
+        }
     };
 
     if (isUserLogged) return <Navigate to="/" />;
 
     return (
-        <Paper classes={{ root: styles.root }}>
-            <Typography classes={{ root: styles.title }} variant="h5">
+        <Paper classes={{ root: classes.root }}>
+            <Typography classes={{ root: classes.title }} variant="h5">
                 Create account
             </Typography>
-            <div className={styles.avatar}>
-                <Avatar sx={{ width: 100, height: 100 }} />
+            <div className={classes.avatar}>
+                <button
+                    type="button"
+                    className={classes.avatarIcon}
+                    onClick={() => inputFileRef.current?.click()}
+                >
+                    <img src={camera} alt="camera" />
+                </button>
+                <input
+                    ref={inputFileRef}
+                    type="file"
+                    onChange={handleChangeFile}
+                    hidden
+                />
+                <Avatar
+                    src={avatarUrl ? `http://localhost:4444${avatarUrl}` : defaultAvatar}
+                    sx={{ width: 100, height: 100 }}
+                    alt="avatar"
+                />
             </div>
             <form onSubmit={handleSubmit(onSubmit)}>
                 <TextField
@@ -55,7 +112,7 @@ export const Registration = (): ReturnComponentType => {
                             message: 'Enter your name',
                         },
                     })}
-                    className={styles.field}
+                    className={classes.field}
                     label="Name"
                     error={Boolean(errors.fullName?.message)}
                     helperText={errors.fullName?.message}
@@ -72,7 +129,7 @@ export const Registration = (): ReturnComponentType => {
                             message: 'Incorrect format of email',
                         },
                     })}
-                    className={styles.field}
+                    className={classes.field}
                     label="Email"
                     error={Boolean(errors.email?.message)}
                     helperText={errors.email?.message}
@@ -89,7 +146,7 @@ export const Registration = (): ReturnComponentType => {
                             message: 'Password should be min 5 symbols',
                         },
                     })}
-                    className={styles.field}
+                    className={classes.field}
                     label="Password"
                     type="password"
                     error={Boolean(errors.password?.message)}

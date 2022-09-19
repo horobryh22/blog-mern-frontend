@@ -6,7 +6,7 @@ import { useParams } from 'react-router-dom';
 import { CommentsBlock, Index, Post, PostSkeleton } from 'components';
 import { REQUEST_STATUS } from 'enums';
 import { useAppDispatch, useAppSelector } from 'hooks';
-import { selectPost, selectPostStatus } from 'store/selectors';
+import { selectIsUserLogged, selectPost, selectPostStatus } from 'store/selectors';
 import { fetchSelectedComments, fetchOnePost } from 'store/thunks';
 import { ReturnComponentType } from 'types';
 
@@ -15,6 +15,7 @@ export const FullPost = (): ReturnComponentType => {
 
     const { id } = useParams();
 
+    const isUserLogged = useAppSelector(selectIsUserLogged);
     const post = useAppSelector(selectPost);
     const postStatus = useAppSelector(selectPostStatus);
     const comments = useAppSelector(state => state.comments.selectedItems);
@@ -40,7 +41,7 @@ export const FullPost = (): ReturnComponentType => {
                 user={post.user}
                 createdAt={post.createdAt}
                 viewsCount={post.viewsCount}
-                commentsCount={3}
+                commentsCount={post.commentsCount}
                 tags={post.tags}
                 isFullPost
                 isEditable={false}
@@ -51,7 +52,7 @@ export const FullPost = (): ReturnComponentType => {
                 items={comments}
                 isLoading={commentsStatus === REQUEST_STATUS.LOADING}
             >
-                <Index postId={id || ''} />
+                {isUserLogged && <Index postId={id || ''} />}
             </CommentsBlock>
         </>
     );
