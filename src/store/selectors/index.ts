@@ -12,3 +12,4 @@ export { selectAppError } from './app/selectAppError';
 export { selectCurrentPostComments } from './comments/selectCurrentPostComments';
 export { selectCommentsStatus } from './comments/selectCommentsStatus';
 export { selectLastComments } from './comments/selectLastComments';
+export { selectSelectedTag } from './posts/selectSelectedTag';
