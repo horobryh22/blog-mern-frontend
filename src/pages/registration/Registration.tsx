@@ -48,7 +48,9 @@ export const Registration = (): ReturnComponentType => {
                 email,
                 password,
                 fullName,
-                avatarUrl: avatarUrl ? `http://localhost:4444${avatarUrl}` : '',
+                avatarUrl: avatarUrl
+                    ? `${process.env.REACT_APP_API_URL}${avatarUrl}`
+                    : '',
             }),
         );
 
@@ -67,7 +69,11 @@ export const Registration = (): ReturnComponentType => {
                     <img src={camera} alt="camera" />
                 </InputFileType>
                 <Avatar
-                    src={avatarUrl ? `http://localhost:4444${avatarUrl}` : defaultAvatar}
+                    src={
+                        avatarUrl
+                            ? `${process.env.REACT_APP_API_URL}${avatarUrl}`
+                            : defaultAvatar
+                    }
                     sx={{ width: 100, height: 100 }}
                     alt="avatar"
                 />

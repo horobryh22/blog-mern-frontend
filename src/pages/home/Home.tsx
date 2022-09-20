@@ -60,7 +60,9 @@ export const Home = (): ReturnComponentType => {
                 key={post?._id}
                 _id={post?._id}
                 title={post?.title}
-                imageUrl={post?.imageUrl ? `http://localhost:4444${post.imageUrl}` : ''}
+                imageUrl={
+                    post?.imageUrl ? `${process.env.REACT_APP_}${post.imageUrl}` : ''
+                }
                 user={post?.user}
                 createdAt={post?.createdAt}
                 viewsCount={post?.viewsCount}
