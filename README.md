@@ -1,4 +1,6 @@
 # Blog
+
+Backend part you can see here: [Blog backend](https://github.com/horobryh22/blog-mern-backend/)
 ___
 ## Technology stack
 * TypeScript
