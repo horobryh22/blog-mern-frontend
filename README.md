@@ -21,5 +21,5 @@ Blog is application for express your thoughts about something and share your new
 You can create, update, remove your articles. Different people can leave comment under your articles,
 for example, you can discuss something there. Also, you have opportunity to sort articles and chose
 most popular or the newest, and you can search articles by tags. Under each of articles you can see
-comments and views count.
+comments and views counts.
 
